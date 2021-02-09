@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:scanshop/products/screens/products.dart';
 import 'package:scanshop/routes.dart';
 import 'package:scanshop/screens/home.dart';
-import 'package:scanshop/screens/products.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   return MaterialPageRoute(

@@ -12,4 +12,9 @@ abstract class TextStyles {
     return GoogleFonts.ptSansCaption(
         textStyle: TextStyle(color: AppColors.textColor, fontSize: 50.0));
   }
+
+  static TextStyle get large {
+    return GoogleFonts.ptSansCaption(
+        textStyle: TextStyle(color: AppColors.textColor, fontSize: 40.0));
+  }
 }
