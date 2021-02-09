@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scanshop/products/bloc/products_bloc.dart';
 import 'package:scanshop/styles/text.dart';
 import 'package:scanshop_models/models.dart';
+import 'package:scanshop/routes.dart';
 
 class Products extends StatelessWidget {
   @override
@@ -15,13 +16,7 @@ class Products extends StatelessWidget {
 
   Widget _buildAppBar(BuildContext context) {
     return AppBar(title: const Text('Scanshopbz'), actions: [
-      Padding(
-          padding: EdgeInsets.only(right: 20),
-          child: GestureDetector(
-              onTap: () {
-                print('Tapped');
-              },
-              child: Icon(Icons.add, size: 50)))
+      _addButton(context),
     ]);
   }
 
@@ -68,6 +63,7 @@ class Products extends StatelessWidget {
         child: GestureDetector(
             onTap: () {
               print('Tapped');
+              Navigator.pushNamed(context, AppRoutes.addProduct);
             },
             child: Icon(Icons.add, size: 50)));
   }

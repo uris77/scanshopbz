@@ -17,4 +17,9 @@ abstract class TextStyles {
     return GoogleFonts.ptSansCaption(
         textStyle: TextStyle(color: AppColors.textColor, fontSize: 40.0));
   }
+
+  static TextStyle get largeButton {
+    return GoogleFonts.ptSansCaption(
+        textStyle: TextStyle(color: AppColors.white, fontSize: 40.0));
+  }
 }

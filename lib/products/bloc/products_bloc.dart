@@ -22,6 +22,8 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
     if (event is LoadProducts) {
       yield ProductsLoadInProgress();
       yield* _reloadProducts();
+    } else if (event is AddProduct) {
+      yield* _addProduct(event);
     }
   }
 
@@ -29,5 +31,11 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
     final products = await productsDao.getAllSortedByName();
     print('products: $products');
     yield ProductsLoadSuccess(products);
+  }
+
+  Stream<ProductsState> _addProduct(AddProduct event) async* {
+    print('adding product: ${event.product}');
+    await productsDao.insert(event.product);
+    yield* _reloadProducts();
   }
 }

@@ -17,6 +17,8 @@ abstract class AppColors {
 
   static Color get blue => Colors.blue;
 
+  static Color get white => Colors.white;
+
   /// App Background
   /// Off white
   static const background = Color(0xFFF7F7F7);
