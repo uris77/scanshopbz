@@ -12,7 +12,9 @@ class Home extends StatelessWidget {
   }
 
   Widget _buildAppBar(BuildContext context) {
-    return AppBar(title: const Text('Scanshopbz'));
+    return AppBar(
+        title: Text('Scanshopbz',
+            style: Theme.of(context).appBarTheme.textTheme.headline2));
   }
 
   Widget _buildBody(BuildContext context) {

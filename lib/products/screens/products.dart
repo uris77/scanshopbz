@@ -15,9 +15,12 @@ class Products extends StatelessWidget {
   }
 
   Widget _buildAppBar(BuildContext context) {
-    return AppBar(title: const Text('Scanshopbz'), actions: [
-      _addButton(context),
-    ]);
+    return AppBar(
+        title: Text('Scanshopbz',
+            style: Theme.of(context).appBarTheme.textTheme.headline2),
+        actions: [
+          _addButton(context),
+        ]);
   }
 
   Widget _buildBody(BuildContext context) {
@@ -46,22 +49,21 @@ class Products extends StatelessWidget {
       itemBuilder: (BuildContext ctx, int index) {
         Product product = products[index];
         return Container(
-          alignment: Alignment.center,
-            child: _productItem(ctx, product));
+            alignment: Alignment.center, child: _productItem(ctx, product));
       },
     );
   }
 
   Widget _productItem(BuildContext context, Product product) {
     return Padding(
-      padding: EdgeInsets.only(left: 20, right: 20, top: 10),
+        padding: EdgeInsets.only(left: 20, right: 20, top: 10),
         child: Card(
-      elevation: 12,
-      child: ListTile(
-        title: Text(product.name, style: TextStyles.title),
-        subtitle: Text('${product.manufacturer} | ${product.category.name}'),
-      )
-    ));
+            elevation: 12,
+            child: ListTile(
+              title: Text(product.name, style: TextStyles.title),
+              subtitle:
+                  Text('${product.manufacturer} | ${product.category.name}'),
+            )));
   }
 
   Widget _emptyList(BuildContext context) {
