@@ -21,8 +21,6 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-  flutter:
-    sdk: flutter
   sembast_db:
     path: ../sembast_db
   scanshop_models:
