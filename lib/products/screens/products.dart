@@ -19,7 +19,7 @@ class Products extends StatelessWidget {
         title: Text('Scanshopbz',
             style: Theme.of(context).appBarTheme.textTheme.headline2),
         actions: [
-          _addButton(context),
+          _addButtonAppBar(context),
         ]);
   }
 
@@ -73,10 +73,19 @@ class Products extends StatelessWidget {
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              Text('No Products', style: TextStyles.xlarge),
               Text('Add a product', style: TextStyles.large),
               _addButton(context),
             ]));
+  }
+
+  Widget _addButtonAppBar(BuildContext context) {
+    return Padding(
+        padding: EdgeInsets.only(right: 20),
+        child: GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, AppRoutes.addProduct);
+            },
+            child: Icon(Icons.add, size: 50)));
   }
 
   Widget _addButton(BuildContext context) {
@@ -86,6 +95,12 @@ class Products extends StatelessWidget {
             onTap: () {
               Navigator.pushNamed(context, AppRoutes.addProduct);
             },
-            child: Icon(Icons.add, size: 50)));
+            child: Container(
+                margin: EdgeInsets.only(top: 20),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    color: Theme.of(context).accentColor,
+                    borderRadius: BorderRadius.all(Radius.circular(50))),
+                child: Icon(Icons.add, size: 50))));
   }
 }

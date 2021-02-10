@@ -19,10 +19,6 @@ class Home extends StatelessWidget {
 
   Widget _buildBody(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.white70,
-        border: Border.all(color: Colors.black),
-      ),
       padding: EdgeInsets.all(20),
       alignment: Alignment.center,
       child: Flex(
@@ -44,8 +40,14 @@ class Home extends StatelessWidget {
               width: MediaQuery.of(context).size.width * .75,
               // alignment: Alignment.center,
               decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black26,
+                        offset: Offset(1, 2),
+                        blurRadius: 1)
+                  ],
                   color: Colors.cyanAccent,
-                  border: Border.all(color: Colors.red[500]),
+                  // border: Border.all(color: Colors.red[500]),
                   borderRadius: BorderRadius.all(Radius.circular(20))),
               child: Flex(direction: Axis.vertical, children: [
                 Expanded(
@@ -77,9 +79,11 @@ class Home extends StatelessWidget {
           width: MediaQuery.of(context).size.width * .75,
           padding: EdgeInsets.all(20),
           decoration: BoxDecoration(
-              backgroundBlendMode: BlendMode.colorBurn,
-              color: Colors.white54,
-              border: Border.all(color: Colors.red[500]),
+              color: Colors.deepOrangeAccent,
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black26, offset: Offset(1, 2), blurRadius: 1)
+              ],
               borderRadius: BorderRadius.all(Radius.circular(20))),
           child: Flex(direction: Axis.vertical, children: <Widget>[
             Text('Stores', style: TextStyles.xlarge),
