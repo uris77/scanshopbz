@@ -74,15 +74,20 @@ class _AddProductScreenState extends State<AddProductScreen> {
   }
 
   Widget _categoriesOptions(BuildContext context) {
-    var items = ProductCategory.values.map((i) {
-      return DropdownMenuItem(value: i, child: Text(i.string()));
+    var items = productCategories.map((i) {
+      return DropdownMenuItem(value: i, child: Text(i.name));
     }).toList();
     return DropdownButtonFormField(
       decoration:
           InputDecoration(hintText: 'Select a category', labelText: 'Category'),
       items: items,
-      onChanged: (ProductCategory val) => _category = val,
-      onSaved: (ProductCategory val) => _category = val,
+      onChanged: (ProductCategory val) {
+        print('category selected: $val');
+        _category = val;
+      },
+      onSaved: (ProductCategory val) {
+        _category = val;
+      },
       validator: (val) {
         return val == null ? 'Please select a category for the product' : null;
       },
@@ -96,7 +101,16 @@ class _AddProductScreenState extends State<AddProductScreen> {
             widthFactor: MediaQuery.of(context).size.width / 2,
             child: ElevatedButton(
               onPressed: () {
-                _formKey.currentState.validate();
+                if (_formKey.currentState.validate()) {
+                  _formKey.currentState.save();
+                  Product product = Product(
+                      name: _name,
+                      description: _description,
+                      category: _category,
+                      manufacturer: _manufacturer);
+                  widget.onSave(product);
+                  Navigator.pop(context);
+                }
               },
               child: Text('Save', style: TextStyles.largeButton),
             )));

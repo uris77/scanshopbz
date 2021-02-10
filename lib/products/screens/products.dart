@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scanshop/products/bloc/products_bloc.dart';
+import 'package:scanshop/routes.dart';
 import 'package:scanshop/styles/text.dart';
 import 'package:scanshop_models/models.dart';
-import 'package:scanshop/routes.dart';
 
 class Products extends StatelessWidget {
   @override
@@ -41,7 +41,27 @@ class Products extends StatelessWidget {
   }
 
   Widget _productsList(BuildContext context, List<Product> products) {
-    return Container(child: Text('Products'));
+    return ListView.builder(
+      itemCount: products.length,
+      itemBuilder: (BuildContext ctx, int index) {
+        Product product = products[index];
+        return Container(
+          alignment: Alignment.center,
+            child: _productItem(ctx, product));
+      },
+    );
+  }
+
+  Widget _productItem(BuildContext context, Product product) {
+    return Padding(
+      padding: EdgeInsets.only(left: 20, right: 20, top: 10),
+        child: Card(
+      elevation: 12,
+      child: ListTile(
+        title: Text(product.name, style: TextStyles.title),
+        subtitle: Text('${product.manufacturer} | ${product.category.name}'),
+      )
+    ));
   }
 
   Widget _emptyList(BuildContext context) {
@@ -62,7 +82,6 @@ class Products extends StatelessWidget {
         padding: EdgeInsets.only(right: 20),
         child: GestureDetector(
             onTap: () {
-              print('Tapped');
               Navigator.pushNamed(context, AppRoutes.addProduct);
             },
             child: Icon(Icons.add, size: 50)));

@@ -1,84 +1,65 @@
-/// Classification and categorization of products.
-enum ProductCategory {
+import 'package:json_annotation/json_annotation.dart';
+
+part 'product_category.g.dart';
+
+/// The categories of the products
+@JsonSerializable(nullable: false)
+class ProductCategory {
+  /// constructs a product category
+  const ProductCategory({this.name});
+
+  /// Create a ProductCategory from a JSON object.
+  factory ProductCategory.fromJson(Map<String, dynamic> json) =>
+      _$ProductCategoryFromJson(json);
+
+  /// the name of the product category.
+  final String name;
+
+  /// convert a product category to a JSON object.
+  Map<String, dynamic> toJson() => _$ProductCategoryToJson(this);
+}
+
+/// the list of product categories available.
+const productCategories = [
   /// coffee/tea, juice, soda, alcohol...
-  beverages,
+  ProductCategory(name: 'Beverages'),
 
   /// flour, baking powder, etc.
-  bakingSupplies,
+  ProductCategory(name: 'Baking Supplies'),
 
   /// sandwich loaves, bread, bagels, tortillas
-  breadBakery,
+  ProductCategory(name: 'Bread & Bakery'),
 
   /// black pepper, cummin, etc.
-  condimentsSauces,
+  ProductCategory(name: 'Condiments & Sauces'),
 
   /// milk, cheese, etc.
-  dairy,
+  ProductCategory(name: 'Dairy'),
 
   /// ice cream, candy, chewing gum, etc.
-  dessertsSweets,
+  ProductCategory(name: 'Desserts & Sweets'),
 
   /// cereals, sugar, pasta, mixes, etc.
-  dryGoods,
+  ProductCategory(name: 'Dry Goods'),
 
   /// apples, bananas, cucumber, etc.
-  fruitVegetables,
+  ProductCategory(name: 'Fruits & Vegetables'),
 
   /// poultry, pork, salmon, etc.
-  meatsSeafoods,
+  ProductCategory(name: 'Meats & Seafoods'),
 
   /// any pre-packaged meal
-  preparedFoods,
+  ProductCategory(name: 'Prepared Foods'),
 
   /// laundry, detergent, dishwashing liquid, etc.
-  cleaners,
+  ProductCategory(name: 'Cleaners'),
 
   /// toilet paper, paper towels, sandwich bags, etc.
-  paperGoods,
+  ProductCategory(name: 'Paper Goods'),
 
   /// shampoo, soap, shaving cream, etc.
-  personalCare,
+  ProductCategory(name: 'Personal Care'),
 
   /// pet food, pet toys, etc.
-  petItems
-}
-
-/// Adds utility methods to the ProductCategory enum.
-extension Stringer on ProductCategory {
-  /// converts a ProductCategory to a string.
-  /// Returns an empty string for invalid product categories.
-  String string() {
-    switch (this) {
-      case ProductCategory.beverages:
-        return 'Beverages';
-      case ProductCategory.bakingSupplies:
-        return 'Baking Supplies';
-      case ProductCategory.breadBakery:
-        return 'Bread Baker';
-      case ProductCategory.condimentsSauces:
-        return 'Condiments & Sauces';
-      case ProductCategory.dairy:
-        return 'Dairy';
-      case ProductCategory.dessertsSweets:
-        return 'Desserts & Sweets';
-      case ProductCategory.dryGoods:
-        return 'Dry Goods';
-      case ProductCategory.fruitVegetables:
-        return 'Fruits & Vegetables';
-      case ProductCategory.meatsSeafoods:
-        return 'Meets & Seafoods';
-      case ProductCategory.preparedFoods:
-        return 'Prepared Foods';
-      case ProductCategory.cleaners:
-        return 'Cleaners';
-      case ProductCategory.paperGoods:
-        return 'Paper Goods';
-      case ProductCategory.personalCare:
-        return 'Personal Care';
-      case ProductCategory.petItems:
-        return 'Pet Items';
-      default:
-        return '';
-    }
-  }
-}
+  ProductCategory(name: 'Pet Items'),
+];

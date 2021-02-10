@@ -5,7 +5,7 @@ import 'package:scanshop_models/src/product_category.dart';
 part 'product.g.dart';
 
 /// Represents a Grocery Product
-@JsonSerializable(nullable: false)
+@JsonSerializable(nullable: true, explicitToJson: true)
 class Product extends Entity {
   /// constructs a product
   Product(
@@ -17,8 +17,9 @@ class Product extends Entity {
       this.manufacturer});
 
   /// Unmarshalls from JSON to Product
-  factory Product.fromJson(Map<String, dynamic> json) =>
-      _$ProductFromJson(json);
+  factory Product.fromJson(Map<String, dynamic> json) {
+    return _$ProductFromJson(json);
+  }
 
   /// Automatically generated & unique id
   int id;
@@ -27,6 +28,7 @@ class Product extends Entity {
   final String name;
 
   /// tags provide additional context and classification
+  @JsonKey(defaultValue: [])
   final List<String> tags;
 
   /// the barcode of the item.
