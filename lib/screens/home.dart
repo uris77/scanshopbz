@@ -17,14 +17,57 @@ class Home extends StatelessWidget {
   }
 
   Widget _buildBody(BuildContext context) {
+    return LayoutBuilder(
+        builder: (BuildContext ctx, BoxConstraints constraints) {
+      if (constraints.maxWidth < 500) {
+        return _narrowLayout(context);
+      }
+      return _wideLayout(context);
+    });
+  }
+
+  Widget _wideLayout(BuildContext context) {
+    return Container(
+        padding: EdgeInsets.all(10),
+        alignment: Alignment.center,
+        // width: MediaQuery.of(context).size.width / 2,
+        child: Flex(
+            direction: Axis.horizontal,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              _Products(
+                widthScale: .02,
+                margin:
+                    EdgeInsets.only(top: 10, left: 10, right: 20, bottom: 20),
+              ),
+              _Stores(
+                  widthScale: .02,
+                  margin:
+                      EdgeInsets.only(top: 10, left: 10, right: 30, bottom: 20))
+            ]));
+  }
+
+  Widget _narrowLayout(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(20),
       alignment: Alignment.center,
       child: Flex(
           direction: Axis.vertical,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[_products(context), _stores(context)]),
+          children: <Widget>[_Products(), _Stores()]),
     );
+  }
+}
+
+class _Products extends StatelessWidget {
+  _Products({this.widthScale = .75, this.margin = const EdgeInsets.all(10)});
+
+  final double widthScale;
+  final EdgeInsets margin;
+
+  @override
+  Widget build(BuildContext context) {
+    return _products(context);
   }
 
   Widget _products(BuildContext context) {
@@ -36,7 +79,8 @@ class Home extends StatelessWidget {
           },
           child: Container(
               padding: EdgeInsets.all(20),
-              width: MediaQuery.of(context).size.width * .75,
+              width: MediaQuery.of(context).size.width * widthScale,
+              margin: margin,
               // alignment: Alignment.center,
               decoration: BoxDecoration(
                   boxShadow: [
@@ -63,11 +107,25 @@ class Home extends StatelessWidget {
   }
 
   Widget _productsImage(BuildContext context) {
-    return Container(
-      child: Image.asset(
-        'assets/groceryItems.png',
+    return AspectRatio(
+      aspectRatio: 2,
+      child: Container(
+        child: Image.asset('assets/groceryItems.png', fit: BoxFit.contain),
       ),
     );
+  }
+}
+
+class _Stores extends StatelessWidget {
+  _Stores(
+      {this.widthScale = .75,
+      this.margin = const EdgeInsets.only(top: 20, bottom: 20)});
+  final double widthScale;
+  final EdgeInsets margin;
+
+  @override
+  Widget build(BuildContext context) {
+    return _stores(context);
   }
 
   Widget _stores(BuildContext context) {
@@ -78,8 +136,8 @@ class Home extends StatelessWidget {
           Navigator.of(context).pushNamed(AppRoutes.stores);
         },
         child: Container(
-            margin: EdgeInsets.only(top: 20, bottom: 20),
-            width: MediaQuery.of(context).size.width * .75,
+            margin: margin,
+            width: MediaQuery.of(context).size.width * widthScale,
             padding: EdgeInsets.all(20),
             decoration: BoxDecoration(
                 color: Colors.deepOrangeAccent,
@@ -99,6 +157,10 @@ class Home extends StatelessWidget {
   }
 
   Widget _storesImage(BuildContext context) {
-    return Container(child: Image.asset('assets/store.png'));
+    return AspectRatio(
+      aspectRatio: 2,
+      child: Container(
+          child: Image.asset('assets/store.png', fit: BoxFit.contain)),
+    );
   }
 }
