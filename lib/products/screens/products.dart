@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:scanshop/constants/textLabels.dart';
 import 'package:scanshop/products/bloc/products_bloc.dart';
 import 'package:scanshop/routes.dart';
 import 'package:scanshop/styles/text.dart';
@@ -15,12 +16,9 @@ class Products extends StatelessWidget {
   }
 
   Widget _buildAppBar(BuildContext context) {
-    return AppBar(
-        title: Text('Scanshopbz',
-            style: Theme.of(context).appBarTheme.textTheme.headline2),
-        actions: [
-          _addButtonAppBar(context),
-        ]);
+    return AppBar(title: AppBarTitle(), actions: [
+      _addButtonAppBar(context),
+    ]);
   }
 
   Widget _buildBody(BuildContext context) {

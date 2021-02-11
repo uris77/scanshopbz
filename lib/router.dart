@@ -5,6 +5,7 @@ import 'package:scanshop/products/screens/add_product_screen.dart';
 import 'package:scanshop/products/screens/products.dart';
 import 'package:scanshop/routes.dart';
 import 'package:scanshop/screens/home.dart';
+import 'package:scanshop/stores/screens/screens.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   return MaterialPageRoute(
@@ -21,9 +22,12 @@ Widget _buildRoutes(BuildContext context, RouteSettings settings) {
       return Products();
     case AppRoutes.addProduct:
       return AddProductScreen(
-          onSave: (product){
-        BlocProvider.of<ProductsBloc>(context).add(AddProduct(product));
-      }, isEditing: false);
+          onSave: (product) {
+            BlocProvider.of<ProductsBloc>(context).add(AddProduct(product));
+          },
+          isEditing: false);
+    case AppRoutes.stores:
+      return StoresScreen();
     default:
       return Home();
   }

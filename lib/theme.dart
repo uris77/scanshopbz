@@ -12,6 +12,7 @@ class AppTheme {
       primaryTextTheme: textTheme,
       appBarTheme: AppBarTheme(
           textTheme: _getAppBarTextTheme(brightness: Brightness.light)),
+      textButtonTheme: _getTextButtonTheme(),
     );
   }
 
@@ -19,11 +20,13 @@ class AppTheme {
     final textTheme = _getTextTheme(brightness: Brightness.dark);
 
     return ThemeData(
-        brightness: Brightness.dark,
-        primaryColor: _primaryColor,
-        accentColor: _accentColor,
-        textTheme: textTheme,
-        primaryTextTheme: textTheme);
+      brightness: Brightness.dark,
+      primaryColor: _primaryColor,
+      accentColor: _accentColor,
+      textTheme: textTheme,
+      primaryTextTheme: textTheme,
+      textButtonTheme: _getTextButtonTheme(),
+    );
   }
 
   static const _primaryColor = Colors.teal;
@@ -43,5 +46,14 @@ class AppTheme {
     final themeData = ThemeData(brightness: brightness);
 
     return GoogleFonts.ptSansCaptionTextTheme(themeData.textTheme);
+  }
+
+  static _getTextButtonTheme() {
+    return TextButtonThemeData(
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(_primaryColor),
+            foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+            textStyle: MaterialStateProperty.all<TextStyle>(GoogleFonts.roboto()
+                .copyWith(color: Colors.white, fontSize: 20))));
   }
 }

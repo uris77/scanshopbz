@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:scanshop/styles/text.dart';
+import 'package:scanshop/constants/textLabels.dart';
 import 'package:scanshop_models/models.dart';
 
 typedef OnSaveCallback = Function(Product product);
@@ -37,38 +37,53 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   Widget _body(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(20.0),
-      child: Form(
-        key: _formKey,
-        child: ListView(
-          children: <Widget>[
-            TextFormField(
-              decoration: InputDecoration(
-                  hintText: 'The name of the product', labelText: 'Name'),
-              validator: (val) {
-                return val.trim().isEmpty
-                    ? 'Please enter a name for the product'
-                    : null;
-              },
-              onSaved: (val) => _name = val,
+      padding: EdgeInsets.all(20),
+      child: Column(
+        children: [
+          Center(
+              child: Text('Create Product',
+                  style: Theme.of(context).textTheme.headline4)),
+          Divider(
+            color: Theme.of(context).primaryColor,
+            thickness: 3,
+          ),
+          _form(context),
+        ],
+      ),
+    );
+  }
+
+  Widget _form(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: ListView(
+        shrinkWrap: true,
+        children: <Widget>[
+          TextFormField(
+            decoration: InputDecoration(
+                hintText: 'The name of the product', labelText: 'Name'),
+            validator: (val) {
+              return val.trim().isEmpty
+                  ? 'Please enter a name for the product'
+                  : null;
+            },
+            onSaved: (val) => _name = val,
+          ),
+          TextFormField(
+            decoration: InputDecoration(
+                hintText: 'A brief description', labelText: 'Description'),
+            onSaved: (val) => _description = val,
+          ),
+          TextFormField(
+            decoration: InputDecoration(
+              hintText: 'Manufacturer. E.g. Marie Sharpe, Western Diaries, etc',
+              labelText: 'Manufacturer',
             ),
-            TextFormField(
-              decoration: InputDecoration(
-                  hintText: 'A brief description', labelText: 'Description'),
-              onSaved: (val) => _description = val,
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                hintText:
-                    'Manufacturer. E.g. Marie Sharpe, Western Diaries, etc',
-                labelText: 'Manufacturer',
-              ),
-              onSaved: (val) => _manufacturer = val,
-            ),
-            _categoriesOptions(context),
-            _saveButton(context),
-          ],
-        ),
+            onSaved: (val) => _manufacturer = val,
+          ),
+          _categoriesOptions(context),
+          _saveButton(context),
+        ],
       ),
     );
   }
@@ -82,7 +97,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
           InputDecoration(hintText: 'Select a category', labelText: 'Category'),
       items: items,
       onChanged: (ProductCategory val) {
-        print('category selected: $val');
         _category = val;
       },
       onSaved: (ProductCategory val) {
@@ -100,6 +114,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
         child: Center(
             widthFactor: MediaQuery.of(context).size.width / 2,
             child: ElevatedButton(
+              style: Theme.of(context).textButtonTheme.style,
               onPressed: () {
                 if (_formKey.currentState.validate()) {
                   _formKey.currentState.save();
@@ -112,13 +127,13 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   Navigator.pop(context);
                 }
               },
-              child: Text('Save', style: TextStyles.largeButton),
+              child: Text('Save'),
             )));
   }
 
   Widget _appBar(BuildContext context) {
     return AppBar(
-      title: Text('Add Product'),
+      title: AppBarTitle(),
     );
   }
 }

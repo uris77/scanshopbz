@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scanshop/constants/textLabels.dart';
 import 'package:scanshop/routes.dart';
 import 'package:scanshop/styles/text.dart';
 
@@ -12,9 +13,7 @@ class Home extends StatelessWidget {
   }
 
   Widget _buildAppBar(BuildContext context) {
-    return AppBar(
-        title: Text('Scanshopbz',
-            style: Theme.of(context).appBarTheme.textTheme.headline2));
+    return AppBar(title: AppBarTitle());
   }
 
   Widget _buildBody(BuildContext context) {
@@ -74,21 +73,28 @@ class Home extends StatelessWidget {
   Widget _stores(BuildContext context) {
     return Expanded(
       flex: 1,
-      child: Container(
-          margin: EdgeInsets.only(top: 20, bottom: 20),
-          width: MediaQuery.of(context).size.width * .75,
-          padding: EdgeInsets.all(20),
-          decoration: BoxDecoration(
-              color: Colors.deepOrangeAccent,
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black26, offset: Offset(1, 2), blurRadius: 1)
-              ],
-              borderRadius: BorderRadius.all(Radius.circular(20))),
-          child: Flex(direction: Axis.vertical, children: <Widget>[
-            Text('Stores', style: TextStyles.xlarge),
-            _storesImage(context)
-          ])),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.of(context).pushNamed(AppRoutes.stores);
+        },
+        child: Container(
+            margin: EdgeInsets.only(top: 20, bottom: 20),
+            width: MediaQuery.of(context).size.width * .75,
+            padding: EdgeInsets.all(20),
+            decoration: BoxDecoration(
+                color: Colors.deepOrangeAccent,
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black26,
+                      offset: Offset(1, 2),
+                      blurRadius: 1)
+                ],
+                borderRadius: BorderRadius.all(Radius.circular(20))),
+            child: Flex(direction: Axis.vertical, children: <Widget>[
+              Text('Stores', style: TextStyles.xlarge),
+              _storesImage(context)
+            ])),
+      ),
     );
   }
 
