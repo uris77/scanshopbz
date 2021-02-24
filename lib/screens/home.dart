@@ -3,6 +3,7 @@ import 'package:scanshop/constants/textLabels.dart';
 import 'package:scanshop/routes.dart';
 import 'package:scanshop/styles/text.dart';
 
+/// The Home Widget
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -12,7 +13,7 @@ class Home extends StatelessWidget {
     );
   }
 
-  Widget _buildAppBar(BuildContext context) {
+  PreferredSizeWidget _buildAppBar(BuildContext context) {
     return AppBar(title: AppBarTitle());
   }
 
@@ -28,7 +29,7 @@ class Home extends StatelessWidget {
 
   Widget _wideLayout(BuildContext context) {
     return Container(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         alignment: Alignment.center,
         // width: MediaQuery.of(context).size.width / 2,
         child: Flex(
@@ -37,13 +38,13 @@ class Home extends StatelessWidget {
             children: <Widget>[
               _Products(
                 widthScale: .02,
-                margin:
-                    EdgeInsets.only(top: 10, left: 10, right: 20, bottom: 20),
+                margin: const EdgeInsets.only(
+                    top: 10, left: 10, right: 20, bottom: 20),
               ),
               _Stores(
                   widthScale: .02,
-                  margin:
-                      EdgeInsets.only(top: 10, left: 10, right: 30, bottom: 20))
+                  margin: const EdgeInsets.only(
+                      top: 10, left: 10, right: 30, bottom: 20))
             ]));
   }
 
@@ -82,7 +83,7 @@ class _Products extends StatelessWidget {
               width: MediaQuery.of(context).size.width * widthScale,
               margin: margin,
               // alignment: Alignment.center,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   boxShadow: [
                     BoxShadow(
                         color: Colors.black26,
@@ -138,8 +139,8 @@ class _Stores extends StatelessWidget {
         child: Container(
             margin: margin,
             width: MediaQuery.of(context).size.width * widthScale,
-            padding: EdgeInsets.all(20),
-            decoration: BoxDecoration(
+            padding: const EdgeInsets.all(20),
+            decoration: const BoxDecoration(
                 color: Colors.deepOrangeAccent,
                 boxShadow: [
                   BoxShadow(

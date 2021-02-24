@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+/// The App Theme
 class AppTheme {
+  /// Light ThemeData
   static ThemeData light() {
     final textTheme = _getTextTheme(brightness: Brightness.light);
 
@@ -16,6 +18,7 @@ class AppTheme {
     );
   }
 
+  /// Dark ThemeData
   static ThemeData dark() {
     final textTheme = _getTextTheme(brightness: Brightness.dark);
 
@@ -32,7 +35,7 @@ class AppTheme {
   static const _primaryColor = Colors.teal;
   static const _accentColor = Colors.white;
 
-  static _getAppBarTextTheme({@required Brightness brightness}) {
+  static TextTheme _getAppBarTextTheme({@required Brightness brightness}) {
     final themeData = ThemeData(
         brightness: brightness,
         textTheme: TextTheme(
@@ -42,13 +45,13 @@ class AppTheme {
     return GoogleFonts.ptSansCaptionTextTheme(themeData.textTheme);
   }
 
-  static _getTextTheme({@required Brightness brightness}) {
+  static TextTheme _getTextTheme({@required Brightness brightness}) {
     final themeData = ThemeData(brightness: brightness);
 
     return GoogleFonts.ptSansCaptionTextTheme(themeData.textTheme);
   }
 
-  static _getTextButtonTheme() {
+  static TextButtonThemeData _getTextButtonTheme() {
     return TextButtonThemeData(
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(_primaryColor),

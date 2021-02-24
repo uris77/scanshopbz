@@ -9,10 +9,16 @@ import 'package:scanshop_models/models.dart';
 part 'products_event.dart';
 part 'products_state.dart';
 
+/// The ProductsBloc. It is responsible for persisting a product and loading
+/// products.
 class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
-  final Dao productsDao;
+  /// Constructor
   ProductsBloc({this.productsDao}) : super(ProductsLoadInProgress());
 
+  /// The Products DAO.
+  final Dao productsDao;
+
+  /// The initial state
   ProductsState get initialState => ProductsLoadInProgress();
 
   @override
@@ -28,7 +34,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
   }
 
   Stream<ProductsState> _reloadProducts() async* {
-    final products = await productsDao.getAllSortedByName();
+    final products = await productsDao.getAllSortedByName() as List<Product>;
     yield ProductsLoadSuccess(products);
   }
 

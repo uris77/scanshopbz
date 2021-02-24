@@ -4,17 +4,24 @@ import 'package:scanshop_models/models.dart';
 
 typedef OnSaveCallback = Function(Product product);
 
+/// The Widget for adding new Products
 class AddProductScreen extends StatefulWidget {
-  final bool isEditing;
-  final OnSaveCallback onSave;
-  final Product product;
-
+  /// Constructor
   AddProductScreen({
     Key key,
     @required this.onSave,
     @required this.isEditing,
     this.product,
   }) : super(key: key);
+
+  /// indicates that the form is being edited
+  final bool isEditing;
+
+  /// callback when a product is saved
+  final OnSaveCallback onSave;
+
+  /// The product to save
+  final Product product;
 
   @override
   _AddProductScreenState createState() => _AddProductScreenState();
@@ -60,7 +67,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
         shrinkWrap: true,
         children: <Widget>[
           TextFormField(
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
                 hintText: 'The name of the product', labelText: 'Name'),
             validator: (val) {
               return val.trim().isEmpty
@@ -70,12 +77,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
             onSaved: (val) => _name = val,
           ),
           TextFormField(
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
                 hintText: 'A brief description', labelText: 'Description'),
             onSaved: (val) => _description = val,
           ),
           TextFormField(
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: 'Manufacturer. E.g. Marie Sharpe, Western Diaries, etc',
               labelText: 'Manufacturer',
             ),
@@ -93,8 +100,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
       return DropdownMenuItem(value: i, child: Text(i.name));
     }).toList();
     return DropdownButtonFormField(
-      decoration:
-          InputDecoration(hintText: 'Select a category', labelText: 'Category'),
+      decoration: const InputDecoration(
+          hintText: 'Select a category', labelText: 'Category'),
       items: items,
       onChanged: (ProductCategory val) {
         _category = val;
@@ -110,7 +117,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   Widget _saveButton(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Center(
             widthFactor: MediaQuery.of(context).size.width / 2,
             child: ElevatedButton(
@@ -118,7 +125,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
               onPressed: () {
                 if (_formKey.currentState.validate()) {
                   _formKey.currentState.save();
-                  Product product = Product(
+                  var product = Product(
                       name: _name,
                       description: _description,
                       category: _category,
@@ -127,11 +134,11 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   Navigator.pop(context);
                 }
               },
-              child: Text('Save'),
+              child: const Text('Save'),
             )));
   }
 
-  Widget _appBar(BuildContext context) {
+  PreferredSizeWidget _appBar(BuildContext context) {
     return AppBar(
       title: AppBarTitle(),
     );

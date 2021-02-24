@@ -6,6 +6,7 @@ import 'package:scanshop/routes.dart';
 import 'package:scanshop/styles/text.dart';
 import 'package:scanshop_models/models.dart';
 
+/// The Widget for displaying Products
 class Products extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,7 @@ class Products extends StatelessWidget {
     );
   }
 
-  Widget _buildAppBar(BuildContext context) {
+  PreferredSizeWidget _buildAppBar(BuildContext context) {
     return AppBar(title: AppBarTitle(), actions: [
       _addButtonAppBar(context),
     ]);
@@ -25,11 +26,11 @@ class Products extends StatelessWidget {
     return BlocBuilder<ProductsBloc, ProductsState>(builder: (context, state) {
       print('state: $state');
       if (state is ProductsLoadInProgress) {
-        return CircularProgressIndicator();
+        return const CircularProgressIndicator();
       } else if (state is ProductsLoadSuccess) {
         return _successWidget(context, state.products);
       } else {
-        return Container(child: Text('Error'));
+        return Container(child: const Text('Error'));
       }
     });
   }
@@ -45,7 +46,7 @@ class Products extends StatelessWidget {
     return ListView.builder(
       itemCount: products.length,
       itemBuilder: (BuildContext ctx, int index) {
-        Product product = products[index];
+        var product = products[index];
         return Container(
             alignment: Alignment.center, child: _productItem(ctx, product));
       },
@@ -54,7 +55,7 @@ class Products extends StatelessWidget {
 
   Widget _productItem(BuildContext context, Product product) {
     return Padding(
-        padding: EdgeInsets.only(left: 20, right: 20, top: 10),
+        padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
         child: Card(
             elevation: 12,
             child: ListTile(
@@ -67,7 +68,7 @@ class Products extends StatelessWidget {
   Widget _emptyList(BuildContext context) {
     return Container(
         alignment: Alignment.center,
-        padding: EdgeInsets.only(top: 60),
+        padding: const EdgeInsets.only(top: 60),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
@@ -78,7 +79,7 @@ class Products extends StatelessWidget {
 
   Widget _addButtonAppBar(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.only(right: 20),
+        padding: const EdgeInsets.only(right: 20),
         child: GestureDetector(
             onTap: () {
               Navigator.pushNamed(context, AppRoutes.addProduct);
@@ -88,17 +89,18 @@ class Products extends StatelessWidget {
 
   Widget _addButton(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.only(right: 20),
+        padding: const EdgeInsets.only(right: 20),
         child: GestureDetector(
             onTap: () {
               Navigator.pushNamed(context, AppRoutes.addProduct);
             },
             child: Container(
-                margin: EdgeInsets.only(top: 20),
+                margin: const EdgeInsets.only(top: 20),
                 decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
                     color: Theme.of(context).accentColor,
-                    borderRadius: BorderRadius.all(Radius.circular(50))),
-                child: Icon(Icons.add, size: 50))));
+                    borderRadius:
+                        const BorderRadius.all(const Radius.circular(50))),
+                child: const Icon(Icons.add, size: 50))));
   }
 }
