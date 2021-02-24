@@ -29,12 +29,10 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
 
   Stream<ProductsState> _reloadProducts() async* {
     final products = await productsDao.getAllSortedByName();
-    print('products: $products');
     yield ProductsLoadSuccess(products);
   }
 
   Stream<ProductsState> _addProduct(AddProduct event) async* {
-    print('adding product: ${event.product}');
     await productsDao.insert(event.product);
     yield* _reloadProducts();
   }
