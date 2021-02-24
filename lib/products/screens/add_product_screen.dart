@@ -44,7 +44,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   Widget _body(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       child: Column(
         children: [
           Center(

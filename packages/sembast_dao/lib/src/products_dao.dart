@@ -5,7 +5,9 @@ import 'package:scanshop_models/models.dart';
 import 'package:sembast/sembast.dart';
 import 'package:sembast_db/sembast_db.dart';
 
+/// The Products DAO, used for interacting with the database.
 class ProductsDao extends Dao<Product> {
+  /// The name of the collection for storing products.
   static const String productStoreName = 'products';
 
   // This store acts like a persistent map, where its Product objects are
@@ -16,6 +18,7 @@ class ProductsDao extends Dao<Product> {
   // instance of an opened database
   Future<Database> get _db async => await AppDatabase.instance.database;
 
+  /// Persists a product
   @override
   Future<void> insert(Product product) async {
     await _productStore.add(await _db, product.toJson());
@@ -30,8 +33,8 @@ class ProductsDao extends Dao<Product> {
   }
 
   @override
-  Future delete(Product product) async {
-    final finder = Finder(filter: Filter.byKey(product.id));
+  Future delete(Product entity) async {
+    final finder = Finder(filter: Filter.byKey(entity.id));
     await _productStore.delete(await _db, finder: finder);
   }
 

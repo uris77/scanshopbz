@@ -7,6 +7,7 @@ import 'package:scanshop/routes.dart';
 import 'package:scanshop/screens/home.dart';
 import 'package:scanshop/stores/screens/screens.dart';
 
+/// generates the MaterialPageRoutes
 Route<dynamic> generateRoute(RouteSettings settings) {
   return MaterialPageRoute(
       settings: settings,

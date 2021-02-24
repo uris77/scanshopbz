@@ -84,7 +84,7 @@ class Products extends StatelessWidget {
             onTap: () {
               Navigator.pushNamed(context, AppRoutes.addProduct);
             },
-            child: Icon(Icons.add, size: 50)));
+            child: const Icon(Icons.add, size: 50)));
   }
 
   Widget _addButton(BuildContext context) {
@@ -99,8 +99,7 @@ class Products extends StatelessWidget {
                 decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
                     color: Theme.of(context).accentColor,
-                    borderRadius:
-                        const BorderRadius.all(const Radius.circular(50))),
+                    borderRadius: const BorderRadius.all(Radius.circular(50))),
                 child: const Icon(Icons.add, size: 50))));
   }
 }

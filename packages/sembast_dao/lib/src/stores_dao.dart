@@ -3,7 +3,9 @@ import 'package:scanshop_models/models.dart';
 import 'package:sembast/sembast.dart';
 import 'package:sembast_db/sembast_db.dart';
 
+/// Dao for interacting with persisted stores.
 class StoresDao extends Dao<Store> {
+  /// The collection name for stores.
   static const String storeName = 'stores';
 
   // This store acts like a persistent map, where its Store objects

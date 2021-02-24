@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_io.dart';
 
+/// The Sembast Database Interface
 class AppDatabase {
   // A private constructor. Allows us to create instances of AppDatabase
   // only from within the AppDatabase class itself.
@@ -13,9 +14,10 @@ class AppDatabase {
   // Singleton instance
   static final AppDatabase _singleton = AppDatabase._();
 
+  /// The name of the file where the database contents are stored
   static final String fileName = 'scanshopbz_demo.db';
 
-  // Singleton accessor
+  /// Singleton accessor for an instance of the database
   static AppDatabase get instance => _singleton;
 
   //Completer is used for transforming synchronous code into async code
@@ -31,7 +33,7 @@ class AppDatabase {
     _dbOpenCompleter.complete(database);
   }
 
-  // Database object accessor
+  /// Database object accessor
   Future<Database> get database async {
     // Database isn't open yet.
     if (_dbOpenCompleter == null) {

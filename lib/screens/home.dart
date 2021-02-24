@@ -50,7 +50,7 @@ class Home extends StatelessWidget {
 
   Widget _narrowLayout(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       alignment: Alignment.center,
       child: Flex(
           direction: Axis.vertical,
@@ -79,7 +79,7 @@ class _Products extends StatelessWidget {
             Navigator.of(context).pushNamed(AppRoutes.products);
           },
           child: Container(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               width: MediaQuery.of(context).size.width * widthScale,
               margin: margin,
               // alignment: Alignment.center,

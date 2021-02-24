@@ -5,8 +5,10 @@ import 'package:scanshop/router.dart';
 import 'package:scanshop/theme.dart';
 import 'package:sembast_dao/sembast_dao.dart';
 
+/// The route observer
 final RouteObserver<Route> routeObserver = RouteObserver<Route>();
 
+/// The main Scanshop App
 class Scanshop extends StatelessWidget {
   // final Dao productsDao = ProductsDao();
   @override

@@ -18,18 +18,18 @@ class StoresBloc extends Bloc<StoresEvent, StoresState> {
   final Dao storesDao;
 
   /// Initial State
-  StoresState get initialState => StoresLoadInProgress()
+  StoresState get initialState => StoresLoadInProgress();
 
   @override
   Stream<StoresState> mapEventToState(
     StoresEvent event,
   ) async* {
-   if(event is LoadStores) {
-     yield StoresLoadInProgress();
-     yield* _reloadStores();
-   } else if (event is AddStore) {
-     yield* _addStore(event);
-   }
+    if (event is LoadStores) {
+      yield StoresLoadInProgress();
+      yield* _reloadStores();
+    } else if (event is AddStore) {
+      yield* _addStore(event);
+    }
   }
 
   Stream<StoresState> _reloadStores() async* {
