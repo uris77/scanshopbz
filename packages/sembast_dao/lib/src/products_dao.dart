@@ -39,7 +39,6 @@ class ProductsDao extends Dao<Product> {
   Future<List<Product>> getAllSortedByName() async {
     final finder = Finder(sortOrders: [SortOrder('name')]);
     final snapshots = await _productStore.find(await _db, finder: finder);
-    print('snapshots: $snapshots}');
     return snapshots.map((snapshot) {
       final product = Product.fromJson(snapshot.value);
       product.id = snapshot.key;
