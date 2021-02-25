@@ -11,4 +11,7 @@ class AppRoutes {
 
   /// Stores
   static const stores = '/stores';
+
+  /// Route for adding stores
+  static const addStore = '/stores/add';
 }
