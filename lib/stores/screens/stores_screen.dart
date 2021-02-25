@@ -100,7 +100,9 @@ class _EmptyList extends StatelessWidget {
               padding: const EdgeInsets.only(right: 20),
               child: _AddStoreButton(
                 key: UniqueKey(),
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).pushNamed(AppRoutes.addStore);
+                },
               ),
             )
           ],
