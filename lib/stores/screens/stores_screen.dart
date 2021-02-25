@@ -38,6 +38,9 @@ class _StoresScreenBody extends StatelessWidget {
       if (state is StoresLoadInProgress) {
         return const CircularProgressIndicator();
       } else if (state is StoresLoadSuccess) {
+        if (state.stores.isEmpty) {
+          return _EmptyList();
+        }
         return _StoresList(key: UniqueKey(), stores: state.stores);
       } else {
         return Container(child: const Text('ERROR'));

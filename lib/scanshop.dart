@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scanshop/products/bloc/products_bloc.dart';
 import 'package:scanshop/router.dart';
+import 'package:scanshop/stores/bloc/stores_bloc.dart';
 import 'package:scanshop/theme.dart';
 import 'package:sembast_dao/sembast_dao.dart';
 
@@ -16,8 +17,11 @@ class Scanshop extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider<ProductsBloc>(
-              create: (_) =>
-                  ProductsBloc(productsDao: ProductsDao())..add(LoadProducts()))
+              create: (_) => ProductsBloc(productsDao: ProductsDao())
+                ..add(LoadProducts())),
+          BlocProvider<StoresBloc>(create: (_) {
+            return StoresBloc(storesDao: StoresDao())..add(LoadStores());
+          })
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
