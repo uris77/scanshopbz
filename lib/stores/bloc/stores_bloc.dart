@@ -31,6 +31,9 @@ class StoresBloc extends Bloc<StoresEvent, StoresState> {
     } else if (event is AddStore) {
       yield StoresSavingInProgress(event.store);
       yield* _addStore(event);
+    } else if (event is UpdateStore) {
+      yield StoresSavingInProgress(event.store);
+      yield* _updateStore(event);
     }
   }
 
@@ -47,10 +50,19 @@ class StoresBloc extends Bloc<StoresEvent, StoresState> {
   Stream<StoresState> _addStore(AddStore event) async* {
     try {
       await storesDao.insert(event.store);
-      print('saved store');
       yield StoresSavedSuccessfully(event.store);
     } on Exception {
       print('failed to save store');
+      yield StoreFailedToSave(event.store);
+    }
+  }
+
+  Stream<StoresState> _updateStore(UpdateStore event) async* {
+    try {
+      await storesDao.update(event.store);
+      yield StoresSavedSuccessfully(event.store);
+    } on Exception{
+      print('failed to update store');
       yield StoreFailedToSave(event.store);
     }
   }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:scanshop/constants/textLabels.dart';
+import 'package:scanshop/stores/bloc/stores_bloc.dart';
 import 'package:scanshop_models/models.dart';
 
 /// Displays the Stores Details.
@@ -15,7 +17,14 @@ class StoreDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBar(context),
-      body: _StoreDetails(store: store),
+      body: BlocListener<StoresBloc, StoresState>(
+          listener: (context, state) {
+            if (state is StoresSavingInProgress) {
+              Scaffold.of(context).showSnackBar(
+                  const SnackBar(content: Text('updating store....')));
+            }
+          },
+          child: _StoreDetails(store: store)),
     );
   }
 
