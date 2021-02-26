@@ -78,12 +78,17 @@ class _StoreItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('displaying store: ${item.id}');
-    return Card(
-      elevation: 12,
-      child: ListTile(
-        title: Text(item.name, style: TextStyles.title),
+    return GestureDetector(
+      child: Card(
+        elevation: 12,
+        child: ListTile(
+          title: Text(item.name, style: TextStyles.medium),
+        ),
       ),
+      onTap: () {
+        Navigator.of(context)
+            .pushNamed(AppRoutes.store, arguments: {'store': item});
+      },
     );
   }
 }

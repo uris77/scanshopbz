@@ -27,4 +27,10 @@ abstract class TextStyles {
     return GoogleFonts.ptSansCaption(
         textStyle: TextStyle(color: AppColors.white, fontSize: 40.0));
   }
+
+  /// Medium
+  static TextStyle get medium {
+    return GoogleFonts.ptSansCaption(
+        textStyle: const TextStyle(color: AppColors.textColor, fontSize: 30.0));
+  }
 }
