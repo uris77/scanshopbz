@@ -43,6 +43,7 @@ class _StoresScreenBody extends StatelessWidget {
         }
         return _StoresList(key: UniqueKey(), stores: state.stores);
       } else {
+        print('state: $state');
         return Container(child: const Text('ERROR'));
       }
     });
@@ -77,6 +78,7 @@ class _StoreItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('displaying store: ${item.id}');
     return Card(
       elevation: 12,
       child: ListTile(

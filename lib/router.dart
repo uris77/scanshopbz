@@ -8,6 +8,7 @@ import 'package:scanshop/screens/home.dart';
 import 'package:scanshop/stores/bloc/stores_bloc.dart';
 import 'package:scanshop/stores/screens/add_store_screen.dart';
 import 'package:scanshop/stores/screens/screens.dart';
+import 'package:sembast_dao/sembast_dao.dart';
 
 /// generates the MaterialPageRoutes
 Route<dynamic> generateRoute(RouteSettings settings) {
@@ -30,10 +31,12 @@ Widget _buildRoutes(BuildContext context, RouteSettings settings) {
           },
           isEditing: false);
     case AppRoutes.stores:
-      return StoresScreen();
+      return BlocProvider(
+          create: (_) => StoresBloc(storesDao: StoresDao())..add(LoadStores()),
+          child: StoresScreen());
     case AppRoutes.addStore:
       return BlocProvider(
-          create: (_) => BlocProvider.of<StoresBloc>(context),
+          create: (_) => StoresBloc(storesDao: StoresDao()),
           child: AddStoreScreen());
     default:
       return Home();

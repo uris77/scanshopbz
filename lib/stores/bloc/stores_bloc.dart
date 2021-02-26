@@ -24,6 +24,7 @@ class StoresBloc extends Bloc<StoresEvent, StoresState> {
   Stream<StoresState> mapEventToState(
     StoresEvent event,
   ) async* {
+    print('mapping event: $event');
     if (event is LoadStores) {
       yield StoresLoadInProgress();
       yield* _reloadStores();
@@ -34,15 +35,22 @@ class StoresBloc extends Bloc<StoresEvent, StoresState> {
   }
 
   Stream<StoresState> _reloadStores() async* {
-    final stores = await storesDao.getAllSortedByName() as List<Store>;
-    yield StoresLoadSuccess(stores);
+    try {
+      final stores = await storesDao.getAllSortedByName() as List<Store>;
+      yield StoresLoadSuccess(stores);
+    } on Exception {
+      print('failed to load stores');
+      yield StoresLoadFailure();
+    }
   }
 
   Stream<StoresState> _addStore(AddStore event) async* {
     try {
       await storesDao.insert(event.store);
+      print('saved store');
       yield StoresSavedSuccessfully(event.store);
     } on Exception {
+      print('failed to save store');
       yield StoreFailedToSave(event.store);
     }
   }

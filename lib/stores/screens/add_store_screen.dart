@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scanshop/constants/textLabels.dart';
+import 'package:scanshop/routes.dart';
 import 'package:scanshop/stores/bloc/stores_bloc.dart';
 import 'package:scanshop_models/models.dart';
 
@@ -19,6 +20,7 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
         padding: const EdgeInsets.all(20),
         child: BlocBuilder<StoresBloc, StoresState>(
           builder: (context, state) {
+            print('state: $state');
             if (state is StoresSavingInProgress) {
               return const CircularProgressIndicator();
             }
@@ -27,7 +29,7 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
             }
 
             if (state is StoresSavedSuccessfully) {
-              return Container(child: const Text('Successfully Saved!'));
+              return _Success();
             }
 
             return _form(context, null);
@@ -76,6 +78,7 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
 
   PreferredSizeWidget _appBar(BuildContext context) {
     return AppBar(
+      automaticallyImplyLeading: false,
       title: AppBarTitle(),
     );
   }
@@ -104,25 +107,66 @@ class _AddStoreFormState extends State<_AddStoreForm> {
                   hintText: 'Name of the Store', labelText: 'Name'),
               onSaved: (val) => _name = val,
             ),
-            _saveButton(context),
+            _buttonRows(context),
           ],
         ));
   }
 
-  Widget _saveButton(BuildContext context) {
-    return Padding(
+  Widget _buttonRows(BuildContext context) {
+    return Center(
+      widthFactor: MediaQuery.of(context).size.width / 2,
+      child: Padding(
         padding: const EdgeInsets.all(20),
-        child: Center(
-          widthFactor: MediaQuery.of(context).size.width / 2,
-          child: ElevatedButton(
-            style: Theme.of(context).textButtonTheme.style,
-            child: const Text('Save'),
-            onPressed: () {
-              print('saving store with name $_name');
-              var store = Store(name: _name);
-              context.read<StoresBloc>().add(AddStore(store));
-            },
-          ),
-        ));
+        child: Row(
+          children: [
+            _saveButton(context),
+            const Spacer(),
+            _cancelButton(context)
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _saveButton(BuildContext context) {
+    return ElevatedButton(
+      style: Theme.of(context).textButtonTheme.style,
+      child: const Text('Save'),
+      onPressed: () {
+        if (_formKey.currentState.validate()) {
+          _formKey.currentState.save();
+          var store = Store(name: _name);
+          var bloc = context.read<StoresBloc>();
+          bloc.add(AddStore(store));
+        }
+      },
+    );
+  }
+
+  Widget _cancelButton(BuildContext context) {
+    return TextButton(
+      onPressed: () {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            AppRoutes.stores, ModalRoute.withName(AppRoutes.home));
+      },
+      style: Theme.of(context).textButtonTheme.style.copyWith(
+          backgroundColor: MaterialStateProperty.all<Color>(Colors.grey)),
+      child: const Text('Cancel'),
+    );
+  }
+}
+
+class _Success extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+        child: Container(
+            child: ElevatedButton(
+                style: Theme.of(context).textButtonTheme.style,
+                child: const Text('Successfully Saved Store'),
+                onPressed: () {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      AppRoutes.stores, ModalRoute.withName(AppRoutes.home));
+                })));
   }
 }
