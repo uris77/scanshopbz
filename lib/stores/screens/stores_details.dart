@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:scanshop/constants/textLabels.dart';
 import 'package:scanshop/stores/bloc/stores_bloc.dart';
@@ -15,16 +16,22 @@ class StoreDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _appBar(context),
-      body: BlocListener<StoresBloc, StoresState>(
-          listener: (context, state) {
-            if (state is StoresSavingInProgress) {
-              Scaffold.of(context).showSnackBar(
-                  const SnackBar(content: Text('updating store....')));
-            }
-          },
-          child: _StoreDetails(store: store)),
+    return WillPopScope(
+      onWillPop: () async {
+        context.read<StoresBloc>().add(LoadStores());
+        return true;
+      },
+      child: Scaffold(
+        appBar: _appBar(context),
+        body: BlocListener<StoresBloc, StoresState>(
+            listener: (context, state) {
+              if (state is StoresSavingInProgress) {
+                Scaffold.of(context).showSnackBar(
+                    const SnackBar(content: Text('updating store....')));
+              }
+            },
+            child: _StoreDetails(store: store)),
+      ),
     );
   }
 
@@ -36,10 +43,22 @@ class StoreDetailsScreen extends StatelessWidget {
   }
 }
 
-class _StoreDetails extends StatelessWidget {
+class _StoreDetails extends StatefulWidget {
   _StoreDetails({Key key, @required this.store}) : super(key: key);
-
   final Store store;
+
+  @override
+  __StoreDetailsState createState() => __StoreDetailsState();
+}
+
+class __StoreDetailsState extends State<_StoreDetails> {
+  Store store;
+
+  @override
+  void initState() {
+    store = widget.store;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,11 +77,27 @@ class _StoreDetails extends StatelessWidget {
                     style: Theme.of(context).textTheme.headline4,
                   ),
                 ),
+                if (store.geoLocation != null)
+                  Expanded(
+                      flex: 2,
+                      child: Row(
+                        children: [
+                          Text('Lat: ${store.geoLocation?.lat}'),
+                        ],
+                      )),
                 RaisedButton(
                   child: const Text('Get Location'),
                   onPressed: () async {
                     var position = await _determinePosition();
-                    print('position: $position');
+                    await (_getAddressFromLatLng(position));
+
+                    setState(() {
+                      store = store.copyWith(
+                          geoLocation: GeoLocation(
+                              lat: position.latitude, lon: position.longitude));
+                    });
+                    var bloc = context.read<StoresBloc>();
+                    bloc.add(UpdateStore(store));
                   },
                 ),
                 const Spacer(),
@@ -100,5 +135,19 @@ class _StoreDetails extends StatelessWidget {
     }
 
     return await Geolocator.getCurrentPosition();
+  }
+
+  Future<void> _getAddressFromLatLng(Position position) async {
+    try {
+      var p =
+          await placemarkFromCoordinates(position.latitude, position.longitude);
+      if (p.isNotEmpty) {
+        var place = p[0];
+
+        print('${place.locality}, ${place.postalCode}, ${place.country}');
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 }

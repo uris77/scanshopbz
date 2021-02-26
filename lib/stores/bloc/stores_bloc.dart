@@ -24,7 +24,6 @@ class StoresBloc extends Bloc<StoresEvent, StoresState> {
   Stream<StoresState> mapEventToState(
     StoresEvent event,
   ) async* {
-    print('mapping event: $event');
     if (event is LoadStores) {
       yield StoresLoadInProgress();
       yield* _reloadStores();
@@ -61,7 +60,7 @@ class StoresBloc extends Bloc<StoresEvent, StoresState> {
     try {
       await storesDao.update(event.store);
       yield StoresSavedSuccessfully(event.store);
-    } on Exception{
+    } on Exception {
       print('failed to update store');
       yield StoreFailedToSave(event.store);
     }

@@ -12,26 +12,29 @@ class AddStoreScreen extends StatefulWidget {
 }
 
 class _AddStoreScreenState extends State<AddStoreScreen> {
+  Store savedStore;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBar(context),
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: BlocBuilder<StoresBloc, StoresState>(
+        child: BlocConsumer<StoresBloc, StoresState>(
+          listener: (context, state) {
+            if (state is StoresSavedSuccessfully) {
+              savedStore = state.store;
+              Navigator.of(context).popAndPushNamed(AppRoutes.store,
+                  arguments: {'store': savedStore});
+            }
+          },
           builder: (context, state) {
-            print('state: $state');
             if (state is StoresSavingInProgress) {
               return const CircularProgressIndicator();
             }
             if (state is StoreFailedToSave) {
               return _form(context, 'Error while saving!');
             }
-
-            if (state is StoresSavedSuccessfully) {
-              return _Success();
-            }
-
             return _form(context, null);
           },
         ),
@@ -153,20 +156,5 @@ class _AddStoreFormState extends State<_AddStoreForm> {
           backgroundColor: MaterialStateProperty.all<Color>(Colors.grey)),
       child: const Text('Cancel'),
     );
-  }
-}
-
-class _Success extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-        child: Container(
-            child: ElevatedButton(
-                style: Theme.of(context).textButtonTheme.style,
-                child: const Text('Successfully Saved Store'),
-                onPressed: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      AppRoutes.stores, ModalRoute.withName(AppRoutes.home));
-                })));
   }
 }

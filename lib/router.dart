@@ -5,12 +5,10 @@ import 'package:scanshop/products/screens/add_product_screen.dart';
 import 'package:scanshop/products/screens/products.dart';
 import 'package:scanshop/routes.dart';
 import 'package:scanshop/screens/home.dart';
-import 'package:scanshop/stores/bloc/stores_bloc.dart';
 import 'package:scanshop/stores/screens/add_store_screen.dart';
 import 'package:scanshop/stores/screens/screens.dart';
 import 'package:scanshop/stores/screens/stores_details.dart';
 import 'package:scanshop_models/models.dart';
-import 'package:sembast_dao/sembast_dao.dart';
 
 /// generates the MaterialPageRoutes
 Route<dynamic> generateRoute(RouteSettings settings) {
@@ -34,19 +32,23 @@ Widget _buildRoutes(BuildContext context, RouteSettings settings) {
           },
           isEditing: false);
     case AppRoutes.stores:
-      return BlocProvider(
-          create: (_) => StoresBloc(storesDao: StoresDao())..add(LoadStores()),
-          child: StoresScreen());
+      return StoresScreen();
+    // return BlocProvider(
+    //     create: (_) =>
+    //         BlocProvider.of<StoresBloc>(context)..add(LoadStores()),
+    //     child: StoresScreen());
     case AppRoutes.addStore:
-      return BlocProvider(
-          create: (_) => StoresBloc(storesDao: StoresDao()),
-          child: AddStoreScreen());
+      return AddStoreScreen();
+    // return BlocProvider(
+    //     create: (_) => BlocProvider.of<StoresBloc>(context),
+    //     child: AddStoreScreen());
     case AppRoutes.store:
       final map = arguments as Map<String, dynamic> ?? {};
       final store = map['store'] as Store;
-      return BlocProvider(
-          create: (_) => StoresBloc(storesDao: StoresDao()),
-          child: StoreDetailsScreen(store: store));
+      return StoreDetailsScreen(store: store);
+    // return BlocProvider(
+    //     create: (_) => BlocProvider.of<StoresBloc>(context),
+    //     child: StoreDetailsScreen(store: store));
     default:
       return Home();
   }
