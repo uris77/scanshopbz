@@ -28,6 +28,7 @@ class StoresBloc extends Bloc<StoresEvent, StoresState> {
       yield StoresLoadInProgress();
       yield* _reloadStores();
     } else if (event is AddStore) {
+      yield StoresSavingInProgress(event.store);
       yield* _addStore(event);
     }
   }
@@ -38,7 +39,11 @@ class StoresBloc extends Bloc<StoresEvent, StoresState> {
   }
 
   Stream<StoresState> _addStore(AddStore event) async* {
-    await storesDao.insert(event.store);
-    yield* _reloadStores();
+    try {
+      await storesDao.insert(event.store);
+      yield StoresSavedSuccessfully(event.store);
+    } on Exception {
+      yield StoreFailedToSave(event.store);
+    }
   }
 }

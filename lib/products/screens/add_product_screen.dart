@@ -28,13 +28,6 @@ class AddProductScreen extends StatefulWidget {
 }
 
 class _AddProductScreenState extends State<AddProductScreen> {
-  static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  String _name;
-  String _description;
-  String _manufacturer;
-  ProductCategory _category;
-
   bool get isEditing => widget.isEditing;
 
   @override
@@ -58,6 +51,61 @@ class _AddProductScreenState extends State<AddProductScreen> {
         ],
       ),
     );
+  }
+
+  Widget _form(BuildContext context) {
+    return _AddProductForm(
+        widthScale: .75,
+        margin: const EdgeInsets.all(20),
+        onSave: widget.onSave);
+  }
+
+  PreferredSizeWidget _appBar(BuildContext context) {
+    return AppBar(
+      title: AppBarTitle(),
+    );
+  }
+}
+
+class _AddProductForm extends StatefulWidget {
+  _AddProductForm(
+      {Key key,
+      @required this.widthScale,
+      @required this.margin,
+      @required this.onSave})
+      : super(key: key);
+
+  final double widthScale;
+  final EdgeInsets margin;
+
+  /// callback when a product is saved
+  final OnSaveCallback onSave;
+
+  @override
+  _AddProductFormState createState() => _AddProductFormState();
+}
+
+class _AddProductFormState extends State<_AddProductForm> {
+  String _name;
+  String _description;
+  String _manufacturer;
+  ProductCategory _category;
+
+  double widthScale;
+  EdgeInsets margin;
+
+  static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    widthScale = widget.widthScale;
+    margin = widget.margin;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _form(context);
   }
 
   Widget _form(BuildContext context) {
@@ -136,11 +184,5 @@ class _AddProductScreenState extends State<AddProductScreen> {
               },
               child: const Text('Save'),
             )));
-  }
-
-  PreferredSizeWidget _appBar(BuildContext context) {
-    return AppBar(
-      title: AppBarTitle(),
-    );
   }
 }

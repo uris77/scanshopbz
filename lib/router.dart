@@ -5,6 +5,7 @@ import 'package:scanshop/products/screens/add_product_screen.dart';
 import 'package:scanshop/products/screens/products.dart';
 import 'package:scanshop/routes.dart';
 import 'package:scanshop/screens/home.dart';
+import 'package:scanshop/stores/bloc/stores_bloc.dart';
 import 'package:scanshop/stores/screens/add_store_screen.dart';
 import 'package:scanshop/stores/screens/screens.dart';
 
@@ -31,7 +32,9 @@ Widget _buildRoutes(BuildContext context, RouteSettings settings) {
     case AppRoutes.stores:
       return StoresScreen();
     case AppRoutes.addStore:
-      return AddStoreScreen();
+      return BlocProvider(
+          create: (_) => BlocProvider.of<StoresBloc>(context),
+          child: AddStoreScreen());
     default:
       return Home();
   }
