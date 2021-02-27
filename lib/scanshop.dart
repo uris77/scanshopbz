@@ -11,16 +11,22 @@ final RouteObserver<Route> routeObserver = RouteObserver<Route>();
 
 /// The main Scanshop App
 class Scanshop extends StatelessWidget {
-  // final Dao productsDao = ProductsDao();
+  /// Constructor
+  Scanshop({Key key, @required this.dbPath}) : super(key: key);
+
+  /// The path where the database contents will be stored.
+  final String dbPath;
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
           BlocProvider<ProductsBloc>(
-              create: (_) => ProductsBloc(productsDao: ProductsDao())
-                ..add(LoadProducts())),
+              create: (_) =>
+                  ProductsBloc(productsDao: ProductsDao(databaseFile: dbPath))
+                    ..add(LoadProducts())),
           BlocProvider<StoresBloc>(create: (_) {
-            return StoresBloc(storesDao: StoresDao())..add(LoadStores());
+            return StoresBloc(storesDao: StoresDao(databaseFile: dbPath))
+              ..add(LoadStores());
           })
         ],
         child: MaterialApp(

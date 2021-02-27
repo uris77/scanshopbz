@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:meta/meta.dart';
 import 'package:scanshop_api/api.dart';
 import 'package:scanshop_models/models.dart';
 import 'package:sembast/sembast.dart';
@@ -7,8 +8,14 @@ import 'package:sembast_db/sembast_db.dart';
 
 /// The Products DAO, used for interacting with the database.
 class ProductsDao extends Dao<Product> {
+  /// Constructor
+  ProductsDao({@required this.databaseFile});
+
   /// The name of the collection for storing products.
   static const String productStoreName = 'products';
+
+  /// The file name used for the dao's database.
+  final String databaseFile;
 
   // This store acts like a persistent map, where its Product objects are
   //converted to a Map
@@ -16,7 +23,8 @@ class ProductsDao extends Dao<Product> {
 
   // Private getter to shorten the amount of coded needed to get the singleton
   // instance of an opened database
-  Future<Database> get _db async => await AppDatabase.instance.database;
+  Future<Database> get _db async =>
+      await AppDatabase.instance(databaseFile).database;
 
   /// Persists a product
   @override

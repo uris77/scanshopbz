@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:meta/meta.dart';
 import 'package:scanshop_api/api.dart';
 import 'package:scanshop_models/models.dart';
 import 'package:sembast/sembast.dart';
@@ -7,6 +8,9 @@ import 'package:sembast_db/sembast_db.dart';
 
 /// The Prices DAO, used for interacting with the database.
 class PricesDao extends Dao<Price> {
+  /// Constructor
+  PricesDao({@required this.databaseFile});
+
   /// The name of the prices collection.
   static const String pricesStoreName = 'prices';
 
@@ -14,9 +18,13 @@ class PricesDao extends Dao<Price> {
   /// converted to a map.
   final _pricesStore = intMapStoreFactory.store(pricesStoreName);
 
+  /// The file name used for the dao's database.
+  final String databaseFile;
+
   /// Private getter to shorten the amount of code needed to get the singleton
   /// instance of an opened database.
-  Future<Database> get _db async => await AppDatabase.instance.database;
+  Future<Database> get _db async =>
+      await AppDatabase.instance(databaseFile).database;
 
   @override
   Future<void> delete(Price entity) async {
