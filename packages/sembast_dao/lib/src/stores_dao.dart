@@ -39,7 +39,6 @@ class StoresDao extends Dao<Store> {
   @override
   Future<void> update(Store entity) async {
     final finder = Finder(filter: Filter.byKey(entity.id));
-    print('updating store: ${entity.toJson()}');
     return await _storeStore.update(await _db, entity.toJson(), finder: finder);
   }
 }

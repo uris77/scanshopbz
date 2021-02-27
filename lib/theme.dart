@@ -46,7 +46,14 @@ class AppTheme {
   }
 
   static TextTheme _getTextTheme({@required Brightness brightness}) {
-    final themeData = ThemeData(brightness: brightness);
+    final themeData = ThemeData(
+        brightness: brightness,
+        textTheme: TextTheme(
+          bodyText1:
+              GoogleFonts.ptSansCaption(fontSize: 15, color: Colors.black54),
+          bodyText2:
+              GoogleFonts.ptSansCaption(fontSize: 10, color: Colors.black26),
+        ));
 
     return GoogleFonts.ptSansCaptionTextTheme(themeData.textTheme);
   }

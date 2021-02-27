@@ -39,6 +39,9 @@ class StoresBloc extends Bloc<StoresEvent, StoresState> {
   Stream<StoresState> _reloadStores() async* {
     try {
       final stores = await storesDao.getAllSortedByName() as List<Store>;
+      // for(var store in stores) {
+      //   await storesDao.delete(store);
+      // }
       yield StoresLoadSuccess(stores);
     } on Exception {
       print('failed to load stores');

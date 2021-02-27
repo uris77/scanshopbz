@@ -13,6 +13,9 @@ Store _$StoreFromJson(Map<String, dynamic> json) {
     geoLocation: json['geoLocation'] == null
         ? null
         : GeoLocation.fromJson(json['geoLocation'] as Map<String, dynamic>),
+    address: json['address'] == null
+        ? null
+        : Address.fromJson(json['address'] as Map<String, dynamic>),
   );
 }
 
@@ -20,4 +23,5 @@ Map<String, dynamic> _$StoreToJson(Store instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'geoLocation': instance.geoLocation?.toJson(),
+      'address': instance.address?.toJson(),
     };

@@ -69,9 +69,11 @@ class __StoreDetailsState extends State<_StoreDetails> {
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 40.0),
           child: Card(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Expanded(
-                  flex: 2,
+                  flex: 1,
                   child: Text(
                     store.name,
                     style: Theme.of(context).textTheme.headline4,
@@ -79,22 +81,29 @@ class __StoreDetailsState extends State<_StoreDetails> {
                 ),
                 if (store.geoLocation != null)
                   Expanded(
-                      flex: 2,
-                      child: Row(
-                        children: [
-                          Text('Lat: ${store.geoLocation?.lat}'),
-                        ],
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Row(
+                          children: [
+                            Text(
+                                '${store.address.street}, '
+                                '${store.address.locality}',
+                                style: Theme.of(context).textTheme.bodyText1),
+                          ],
+                        ),
                       )),
                 RaisedButton(
                   child: const Text('Get Location'),
                   onPressed: () async {
                     var position = await _determinePosition();
-                    await (_getAddressFromLatLng(position));
+                    var address = await (_getAddressFromLatLng(position));
 
                     setState(() {
                       store = store.copyWith(
                           geoLocation: GeoLocation(
-                              lat: position.latitude, lon: position.longitude));
+                              lat: position.latitude, lon: position.longitude),
+                          address: address);
                     });
                     var bloc = context.read<StoresBloc>();
                     bloc.add(UpdateStore(store));
@@ -137,17 +146,26 @@ class __StoreDetailsState extends State<_StoreDetails> {
     return await Geolocator.getCurrentPosition();
   }
 
-  Future<void> _getAddressFromLatLng(Position position) async {
-    try {
-      var p =
-          await placemarkFromCoordinates(position.latitude, position.longitude);
-      if (p.isNotEmpty) {
-        var place = p[0];
+  Future<Address> _getAddressFromLatLng(Position position) async {
+    Address address;
+    var p =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+    if (p.isNotEmpty) {
+      var place = p[0];
 
-        print('${place.locality}, ${place.postalCode}, ${place.country}');
-      }
-    } catch (e) {
-      print(e);
+      print('Locality: ${place.locality}, SubLocality: ${place.subLocality}, '
+          'Admin Area: ${place.administrativeArea}, '
+          'SubAdmin: ${place.subAdministrativeArea},'
+          'Street: ${place.street}, Name: ${place.name}, '
+          'Country: ${place.country}');
+      address = Address(
+        name: place.name,
+        street: place.street,
+        locality: place.locality,
+        administrativeArea: place.administrativeArea,
+        country: place.country,
+      );
     }
+    return address;
   }
 }
