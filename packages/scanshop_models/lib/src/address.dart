@@ -17,6 +17,10 @@ class Address extends Entity {
       this.administrativeArea,
       this.country});
 
+  /// converts a JSON object ot an Address
+  factory Address.fromJson(Map<String, dynamic> json) =>
+      _$AddressFromJson(json);
+
   /// Copies an Address and modifies only select fields.
   Address copyWith(
       {String name,
@@ -30,10 +34,6 @@ class Address extends Entity {
         administrativeArea: administrativeArea ?? this.administrativeArea,
         country: country);
   }
-
-  /// converts a JSON object ot an Address
-  factory Address.fromJson(Map<String, dynamic> json) =>
-      _$AddressFromJson(json);
 
   /// Automatically generated unique id
   int id;
@@ -56,5 +56,6 @@ class Address extends Entity {
   /// The name of the country. This is generally just Belize.
   final String country;
 
+  /// Converts an Address to JSON
   Map<String, dynamic> toJson() => _$AddressToJson(this);
 }
