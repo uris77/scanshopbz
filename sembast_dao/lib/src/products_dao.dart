@@ -4,6 +4,7 @@ import 'package:meta/meta.dart';
 import 'package:scanshop_api/api.dart';
 import 'package:scanshop_models/models.dart';
 import 'package:sembast/sembast.dart';
+import 'package:sembast/sembast_memory.dart';
 import 'package:sembast_db/sembast_db.dart';
 
 /// The Products DAO, used for interacting with the database.
@@ -23,8 +24,13 @@ class ProductsDao extends Dao<Product> {
 
   // Private getter to shorten the amount of coded needed to get the singleton
   // instance of an opened database
-  Future<Database> get _db async =>
-      await AppDatabase.instance(databaseFile).database;
+  Future<Database> get _db async {
+    if (databaseFile == 'memory') {
+      var factory = databaseFactoryMemory;
+      return await factory.openDatabase(databaseFile);
+    }
+    return await AppDatabase.instance(databaseFile).database;
+  }
 
   /// Persists a product
   @override

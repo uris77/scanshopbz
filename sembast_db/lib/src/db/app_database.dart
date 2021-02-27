@@ -14,8 +14,6 @@ class AppDatabase {
   static AppDatabase _singleton(String filename) =>
       AppDatabase._(fileName: filename);
 
-  // static AppDatabase _withFileName(String file) => AppDatabase.(fileName: file);
-
   /// The name of the file where the database contents are stored
   final String fileName;
   // = 'scanshopbz_demo.db';
