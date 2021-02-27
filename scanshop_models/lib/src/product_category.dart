@@ -1,10 +1,11 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'product_category.g.dart';
 
 /// The categories of the products
 @JsonSerializable(nullable: false)
-class ProductCategory {
+class ProductCategory implements Equatable {
   /// constructs a product category
   const ProductCategory({this.name});
 
@@ -17,6 +18,13 @@ class ProductCategory {
 
   /// convert a product category to a JSON object.
   Map<String, dynamic> toJson() => _$ProductCategoryToJson(this);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [name];
+
+  @override
+  bool get stringify => true;
 }
 
 /// the list of product categories available.

@@ -40,5 +40,6 @@ class Price extends Entity {
   /// The timestamp when it was created.
   final DateTime timestamp;
 
+  /// Converts price to JSON.
   Map<String, dynamic> toJson() => _$PriceToJson(this);
 }

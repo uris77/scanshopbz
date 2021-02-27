@@ -11,6 +11,9 @@ class Store extends Entity {
   /// constructs a store
   Store({this.id, this.name, this.geoLocation, this.address});
 
+  /// converts a JSON object to Store
+  factory Store.fromJson(Map<String, dynamic> json) => _$StoreFromJson(json);
+
   /// Copies a store and only modify certain fields.
   Store copyWith({String name, GeoLocation geoLocation, Address address}) {
     return Store(
@@ -20,9 +23,6 @@ class Store extends Entity {
       address: address ?? this.address,
     );
   }
-
-  /// converts a JSON object to Store
-  factory Store.fromJson(Map<String, dynamic> json) => _$StoreFromJson(json);
 
   /// Automatically generated & unique id
   int id;

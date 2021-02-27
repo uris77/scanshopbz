@@ -62,4 +62,14 @@ class ProductsDao extends Dao<Product> {
       return product;
     }).toList();
   }
+
+  /// Counts all products by category
+  Future<Map<String, int>> countByCategory() async {
+    var counts = <String, int>{};
+    await for (var snapshot in _productStore.stream(await _db)) {
+      var product = Product.fromJson(snapshot.value);
+      counts[product.category.name] = (counts[product.category.name] ?? 0) + 1;
+    }
+    return counts;
+  }
 }

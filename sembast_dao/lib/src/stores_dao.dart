@@ -6,6 +6,7 @@ import 'package:sembast_db/sembast_db.dart';
 
 /// Dao for interacting with persisted stores.
 class StoresDao extends Dao<Store> {
+  /// constructor
   StoresDao({@required this.databaseFile});
 
   /// The collection name for stores.
