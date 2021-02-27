@@ -22,45 +22,53 @@ main() {
       expect(teas.isNotEmpty, isTrue);
       expect(teas.length, equals(1));
     });
-    test('should group products by category', () async {
-      // Create some product fixtures
-      final beverages = [
-        Product(name: 'coke', category: beverageCategory),
-        Product(name: 'coffee', category: beverageCategory),
-        Product(name: 'beer', category: beverageCategory),
-        Product(name: 'orange juice', category: beverageCategory),
-      ];
-      final dairy = [
-        Product(name: 'milk', category: dairyCategory),
-        Product(name: 'Parmesan Cheese', category: dairyCategory),
-      ];
-      final fruitsAndVegetables = [
-        Product(name: 'grapes', category: fruitsVegsCategory),
-        Product(name: 'sweet pepper', category: fruitsVegsCategory),
-        Product(name: 'apple', category: fruitsVegsCategory),
-        Product(name: 'carrots', category: fruitsVegsCategory),
-        Product(name: 'red kidney beans', category: fruitsVegsCategory),
-        Product(name: 'onions', category: fruitsVegsCategory),
-        Product(name: 'white rice', category: fruitsVegsCategory),
-      ];
+    group('counting by category', () {
+      setUpAll(() async {
+        // Create some product fixtures
+        final beverages = [
+          Product(name: 'coke', category: beverageCategory),
+          Product(name: 'coffee', category: beverageCategory),
+          Product(name: 'beer', category: beverageCategory),
+          Product(name: 'orange juice', category: beverageCategory),
+        ];
+        final dairy = [
+          Product(name: 'milk', category: dairyCategory),
+          Product(name: 'Parmesan Cheese', category: dairyCategory),
+        ];
+        final fruitsAndVegetables = [
+          Product(name: 'grapes', category: fruitsVegsCategory),
+          Product(name: 'sweet pepper', category: fruitsVegsCategory),
+          Product(name: 'apple', category: fruitsVegsCategory),
+          Product(name: 'carrots', category: fruitsVegsCategory),
+          Product(name: 'red kidney beans', category: fruitsVegsCategory),
+          Product(name: 'onions', category: fruitsVegsCategory),
+          Product(name: 'white rice', category: fruitsVegsCategory),
+        ];
 
-      // Save all the products
-      for (var beverage in beverages) {
-        await dao.insert(beverage);
-      }
-      // Save all the dairy
-      for (var dairyItem in dairy) {
-        await dao.insert(dairyItem);
-      }
-      // Save all fruits & veggies
-      for (var fruitVeg in fruitsAndVegetables) {
-        await dao.insert(fruitVeg);
-      }
-
-      var countsByCategory = await dao.countByCategory();
-      expect(countsByCategory[fruitsVegsCategory.name], equals(7));
-      expect(countsByCategory[dairyCategory.name], equals(2));
-      expect(countsByCategory[beverageCategory.name], greaterThanOrEqualTo(4));
+        // Save all the products
+        for (var beverage in beverages) {
+          await dao.insert(beverage);
+        }
+        // Save all the dairy
+        for (var dairyItem in dairy) {
+          await dao.insert(dairyItem);
+        }
+        // Save all fruits & veggies
+        for (var fruitVeg in fruitsAndVegetables) {
+          await dao.insert(fruitVeg);
+        }
+      });
+      test('should count products by category', () async {
+        var countsByCategory = await dao.countByAllCategories();
+        expect(countsByCategory[fruitsVegsCategory.name], equals(7));
+        expect(countsByCategory[dairyCategory.name], equals(2));
+        expect(
+            countsByCategory[beverageCategory.name], greaterThanOrEqualTo(4));
+      });
+      test('should count products by selected category', () async {
+        var totalDairy = await dao.countByCategory('Dairy');
+        expect(totalDairy, equals(2));
+      });
     });
   });
 }

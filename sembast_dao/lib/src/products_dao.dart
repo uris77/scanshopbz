@@ -64,12 +64,18 @@ class ProductsDao extends Dao<Product> {
   }
 
   /// Counts all products by category
-  Future<Map<String, int>> countByCategory() async {
+  Future<Map<String, int>> countByAllCategories() async {
     var counts = <String, int>{};
     await for (var snapshot in _productStore.stream(await _db)) {
       var product = Product.fromJson(snapshot.value);
       counts[product.category.name] = (counts[product.category.name] ?? 0) + 1;
     }
     return counts;
+  }
+
+  /// Counts the number of products for a particular category.
+  Future<int> countByCategory(String categoryName) async {
+    final filter = Filter.equals('category.name', categoryName);
+    return await _productStore.count(await _db, filter: filter);
   }
 }
