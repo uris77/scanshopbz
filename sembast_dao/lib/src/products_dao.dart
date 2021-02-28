@@ -78,4 +78,14 @@ class ProductsDao extends Dao<Product> {
     final filter = Filter.equals('category.name', categoryName);
     return await _productStore.count(await _db, filter: filter);
   }
+
+  /// Gets a product with the given name
+  Future<Product> getByName(String name) async {
+    final filter = Filter.equals('name', name);
+    final finder = Finder(filter: filter);
+    final snapshot = await _productStore.findFirst(await _db, finder: finder);
+    final product = Product.fromJson(snapshot.value);
+    product.id = snapshot.key;
+    return product;
+  }
 }
