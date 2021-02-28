@@ -4,6 +4,7 @@ import 'package:meta/meta.dart';
 import 'package:scanshop_api/api.dart';
 import 'package:scanshop_models/models.dart';
 import 'package:sembast/sembast.dart';
+import 'package:sembast/sembast_memory.dart';
 import 'package:sembast_db/sembast_db.dart';
 
 /// The Prices DAO, used for interacting with the database.
@@ -23,8 +24,13 @@ class PricesDao extends Dao<Price> {
 
   /// Private getter to shorten the amount of code needed to get the singleton
   /// instance of an opened database.
-  Future<Database> get _db async =>
-      await AppDatabase.instance(databaseFile).database;
+  Future<Database> get _db async {
+    if (databaseFile == 'memory') {
+      var factory = databaseFactoryMemory;
+      return await factory.openDatabase(databaseFile);
+    }
+    return await AppDatabase.instance(databaseFile).database;
+  }
 
   @override
   Future<void> delete(Price entity) async {
@@ -52,5 +58,16 @@ class PricesDao extends Dao<Price> {
   Future<void> update(Price entity) async {
     final finder = Finder(filter: Filter.byKey(entity.id));
     await _pricesStore.update(await _db, entity.toJson(), finder: finder);
+  }
+
+  /// retrieves prices for the specified product
+  Future<List<Price>> getAllForProduct(Product product) async {
+    final finder = Finder(filter: Filter.equals('product.name', product.name));
+    final snapshots = await _pricesStore.find(await _db, finder: finder);
+    return snapshots.map((snapshot) {
+      final price = Price.fromJson(snapshot.value);
+      price.id = snapshot.key;
+      return price;
+    }).toList();
   }
 }

@@ -31,10 +31,15 @@ main() {
         final tea = await productsDao.getByName('tea');
         expect(tea.name, equals('tea'));
         expect(tea.id, isNotNull);
+
+        // assign a price
+        await pricesDao.insert(
+            Price(product: tea, price: 5.75, timestamp: DateTime.now()));
+        final prices = await pricesDao.getAllForProduct(tea);
+        expect(prices.length, equals(1));
       });
     });
     group('querying', () {
-      test('should query all prices for a product', () {});
       test('should query all prices for a product in a store', () {});
     });
   });
