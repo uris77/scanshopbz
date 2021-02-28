@@ -62,6 +62,12 @@ main() {
         final prices = await pricesDao.getAllPricesAtStore(store);
         expect(prices.length, equals(products.length));
       });
+      test('should query all prices by category', () async {
+        fail('Not Implemented');
+      });
+      test('should query all prices by category in a store', () async {
+        fail('Not Implemented');
+      });
     });
   });
 }
