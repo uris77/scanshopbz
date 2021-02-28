@@ -63,7 +63,9 @@ main() {
         expect(prices.length, equals(products.length));
       });
       test('should query all prices by category', () async {
-        fail('Not Implemented');
+        final products =
+            await pricesDao.getAllPricesByCategory(beverageCategory);
+        expect(products.length, equals(6));
       });
       test('should query all prices by category in a store', () async {
         fail('Not Implemented');
