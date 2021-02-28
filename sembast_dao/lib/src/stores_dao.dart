@@ -2,6 +2,7 @@ import 'package:meta/meta.dart';
 import 'package:scanshop_api/api.dart';
 import 'package:scanshop_models/models.dart';
 import 'package:sembast/sembast.dart';
+import 'package:sembast/sembast_memory.dart';
 import 'package:sembast_db/sembast_db.dart';
 
 /// Dao for interacting with persisted stores.
@@ -19,8 +20,13 @@ class StoresDao extends Dao<Store> {
   // are converted to a Map
   final _storeStore = intMapStoreFactory.store(storeName);
 
-  Future<Database> get _db async =>
-      await AppDatabase.instance(databaseFile).database;
+  Future<Database> get _db async {
+    if (databaseFile == 'memory') {
+      var factory = databaseFactoryMemory;
+      return await factory.openDatabase(databaseFile);
+    }
+    return await AppDatabase.instance(databaseFile).database;
+  }
 
   @override
   Future<void> delete(Store entity) async {
@@ -48,5 +54,15 @@ class StoresDao extends Dao<Store> {
   Future<void> update(Store entity) async {
     final finder = Finder(filter: Filter.byKey(entity.id));
     return await _storeStore.update(await _db, entity.toJson(), finder: finder);
+  }
+
+  /// Retrieves a store by its name.
+  Future<Store> getByName(String name) async {
+    final filter = Filter.equals('name', name);
+    final finder = Finder(filter: filter);
+    final snapshot = await _storeStore.findFirst(await _db, finder: finder);
+    var store = Store.fromJson(snapshot.value);
+    store.id = snapshot.key;
+    return store;
   }
 }

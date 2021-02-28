@@ -70,4 +70,15 @@ class PricesDao extends Dao<Price> {
       return price;
     }).toList();
   }
+
+  /// Retrieves all prices at a store.
+  Future<List<Price>> getAllPricesAtStore(Store store) async {
+    final finder = Finder(filter: Filter.equals('store.id', store.id));
+    final snapshots = await _pricesStore.find(await _db, finder: finder);
+    return snapshots.map((snapshot) {
+      final price = Price.fromJson(snapshot.value);
+      price.id = snapshot.key;
+      return price;
+    }).toList();
+  }
 }
