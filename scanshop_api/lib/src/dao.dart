@@ -15,4 +15,7 @@ abstract class Dao<T extends Entity> {
 
   /// Retrieves all entities and sorts them by name.
   Future<List<T>> getAllSortedByName();
+
+  /// Clears all the records in the database.
+  Future<void> clear();
 }

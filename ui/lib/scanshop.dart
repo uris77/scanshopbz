@@ -14,18 +14,19 @@ final RouteObserver<Route> routeObserver = RouteObserver<Route>();
 /// The main Scanshop App
 class Scanshop extends StatelessWidget {
   /// Constructor
-  Scanshop({Key key, @required this.dbPath}) : super(key: key);
+  Scanshop(
+      {Key key, @required this.idGenerator, @required this.dbpathGenerator})
+      : super(key: key);
 
   /// The unique id Generator
-  final idGenerator = IdGenerator();
+  final IdGenerator idGenerator;
 
   /// Generates the path where the database is stored.
-  final dbpathGenerator = DbpathGenerator('scanshopbz_demo');
+  final DbpathGenerator dbpathGenerator;
 
-  /// The path where the database contents will be stored.
-  final String dbPath;
   @override
   Widget build(BuildContext context) {
+    final dbPath = dbpathGenerator.dbpath;
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<IdGenerator>(create: (_) => idGenerator),

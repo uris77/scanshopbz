@@ -86,4 +86,9 @@ class ProductsDao extends Dao<Product> {
     final product = Product.fromJson(snapshot.value);
     return product;
   }
+
+  @override
+  Future<void> clear() async {
+    await _productStore.delete(await _db);
+  }
 }

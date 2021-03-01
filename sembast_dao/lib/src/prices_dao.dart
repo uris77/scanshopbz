@@ -93,4 +93,9 @@ class PricesDao extends Dao<Price> {
   Price _snapshotToPrice(RecordSnapshot<int, Map<String, dynamic>> snapshot) {
     return Price.fromJson(snapshot.value);
   }
+
+  @override
+  Future<void> clear() async {
+    await _pricesStore.delete(await _db);
+  }
 }

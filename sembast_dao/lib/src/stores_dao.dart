@@ -63,4 +63,10 @@ class StoresDao extends Dao<Store> {
     var store = Store.fromJson(snapshot.value);
     return store;
   }
+
+  /// clears the database
+  @override
+  Future<void> clear() async {
+    await _storeStore.delete(await _db);
+  }
 }
