@@ -41,7 +41,8 @@ Widget _buildRoutes(BuildContext context, RouteSettings settings) {
       final map = arguments as Map<String, dynamic> ?? {};
       final product = map['product'] as Product;
       return BlocProvider.value(
-          value: BlocProvider.of<PricesBloc>(context),
+          value: BlocProvider.of<PricesBloc>(context)
+            ..add(LoadPricesForProduct(product: product)),
           child: ProductPricesScreen(
             product: product,
           ));

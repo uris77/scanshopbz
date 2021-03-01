@@ -22,6 +22,7 @@ class PricesBloc extends Bloc<PricesEvent, PricesState> {
     PricesEvent event,
   ) async* {
     if (event is LoadPricesForProduct) {
+      yield PricesLoadInProgress();
       yield* _getPricesForProduct(event.product);
     }
   }
