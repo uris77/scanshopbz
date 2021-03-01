@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:scanshop_api/api.dart';
 
@@ -5,7 +6,7 @@ part 'geo_location.g.dart';
 
 /// Represents a GeoLocation
 @JsonSerializable()
-class GeoLocation extends Entity {
+class GeoLocation extends Entity implements Equatable {
   /// Constructs a GeoLocation
   GeoLocation({this.lat, this.lon});
 
@@ -21,4 +22,10 @@ class GeoLocation extends Entity {
 
   /// Converts a GeoLocation to JSON
   Map<String, dynamic> toJson() => _$GeoLocationToJson(this);
+
+  @override
+  List<Object> get props => [lat, lon];
+
+  @override
+  bool get stringify => true;
 }

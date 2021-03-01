@@ -12,6 +12,7 @@ environment:
   sdk: '>=2.7.0 <3.0.0'
 
 dependencies:
+  uuid: 2.2.2
   sembast_db:
     path: ../sembast_db
   scanshop_models:

@@ -40,7 +40,6 @@ class StoresDao extends Dao<Store> {
     final snapshots = await _storeStore.find(await _db, finder: finder);
     return snapshots.map((snapshot) {
       final store = Store.fromJson(snapshot.value);
-      store.id = snapshot.key;
       return store;
     }).toList();
   }
@@ -62,7 +61,6 @@ class StoresDao extends Dao<Store> {
     final finder = Finder(filter: filter);
     final snapshot = await _storeStore.findFirst(await _db, finder: finder);
     var store = Store.fromJson(snapshot.value);
-    store.id = snapshot.key;
     return store;
   }
 }

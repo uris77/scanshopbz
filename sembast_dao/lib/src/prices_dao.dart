@@ -82,10 +82,27 @@ class PricesDao extends Dao<Price> {
     }).toList();
   }
 
+  /// Gets all prices for a specified category
   Future<List<Price>> getAllPricesByCategory(ProductCategory category) async {
     final finder =
         Finder(filter: Filter.equals('product.category.name', category.name));
     final snapshots = await _pricesStore.find(await _db, finder: finder);
+    return snapshots.map((snapshot) {
+      final price = Price.fromJson(snapshot.value);
+      price.id = snapshot.key;
+      return price;
+    }).toList();
+  }
+
+  /// Gets all prices by store and category
+  Future<List<Price>> getAllPricesByStoreAndCategory(
+      Store store, ProductCategory category) async {
+    final filter = Filter.and([
+      Filter.equals('store.id', store.id),
+      Filter.equals('product.category.name', category.name)
+    ]);
+    final snapshots =
+        await _pricesStore.find(await _db, finder: Finder(filter: filter));
     return snapshots.map((snapshot) {
       final price = Price.fromJson(snapshot.value);
       price.id = snapshot.key;

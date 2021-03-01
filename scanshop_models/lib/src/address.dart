@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:scanshop_api/api.dart';
 
@@ -7,7 +8,8 @@ part 'address.g.dart';
 /// It only represents the Country, Street, Locality, Name and Admin Area.
 /// There is no need for zipcode because it is not applicable to Belize.
 @JsonSerializable()
-class Address extends Entity {
+// ignore: must_be_immutable
+class Address extends Entity implements Equatable {
   /// Constructor
   Address(
       {this.id,
@@ -58,4 +60,10 @@ class Address extends Entity {
 
   /// Converts an Address to JSON
   Map<String, dynamic> toJson() => _$AddressToJson(this);
+
+  @override
+  List<Object> get props => [id, name];
+
+  @override
+  bool get stringify => true;
 }
