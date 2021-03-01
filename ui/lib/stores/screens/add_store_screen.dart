@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scanshop/constants/textLabels.dart';
+import 'package:scanshop/repositories/id_generator.dart';
 import 'package:scanshop/routes.dart';
 import 'package:scanshop/stores/bloc/stores_bloc.dart';
 import 'package:scanshop_models/models.dart';
@@ -138,7 +139,8 @@ class _AddStoreFormState extends State<_AddStoreForm> {
       onPressed: () {
         if (_formKey.currentState.validate()) {
           _formKey.currentState.save();
-          var store = Store(name: _name);
+          var id = context.read<IdGenerator>().id;
+          var store = Store(name: _name, id: id);
           var bloc = context.read<StoresBloc>();
           bloc.add(AddStore(store));
         }

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scanshop/constants/textLabels.dart';
+import 'package:scanshop/products/bloc/products_bloc.dart';
+import 'package:scanshop/repositories/id_generator.dart';
 import 'package:scanshop_models/models.dart';
 
 typedef OnSaveCallback = Function(Product product);
@@ -9,16 +12,12 @@ class AddProductScreen extends StatefulWidget {
   /// Constructor
   AddProductScreen({
     Key key,
-    @required this.onSave,
     @required this.isEditing,
     this.product,
   }) : super(key: key);
 
   /// indicates that the form is being edited
   final bool isEditing;
-
-  /// callback when a product is saved
-  final OnSaveCallback onSave;
 
   /// The product to save
   final Product product;
@@ -55,9 +54,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   Widget _form(BuildContext context) {
     return _AddProductForm(
-        widthScale: .75,
-        margin: const EdgeInsets.all(20),
-        onSave: widget.onSave);
+      widthScale: .75,
+      margin: const EdgeInsets.all(20),
+    );
   }
 
   PreferredSizeWidget _appBar(BuildContext context) {
@@ -173,12 +172,14 @@ class _AddProductFormState extends State<_AddProductForm> {
               onPressed: () {
                 if (_formKey.currentState.validate()) {
                   _formKey.currentState.save();
+                  var id = context.read<IdGenerator>().id;
                   var product = Product(
+                      id: id,
                       name: _name,
                       description: _description,
                       category: _category,
                       manufacturer: _manufacturer);
-                  widget.onSave(product);
+                  context.read<ProductsBloc>().add(AddProduct(product));
                   Navigator.pop(context);
                 }
               },
