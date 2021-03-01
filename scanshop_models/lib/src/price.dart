@@ -1,4 +1,6 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:meta/meta.dart';
 import 'package:scanshop_api/api.dart';
 
 import '../models.dart';
@@ -7,15 +9,21 @@ part 'price.g.dart';
 
 /// The price of an item at a store.
 @JsonSerializable(explicitToJson: true)
-class Price extends Entity {
+class Price extends Entity implements Equatable {
   /// Constructor
-  Price({this.id, this.product, this.store, this.price, this.timestamp});
+  Price(
+      {@required this.id,
+      this.product,
+      this.store,
+      this.price,
+      this.timestamp});
 
   /// converts a JSON object to Price
   factory Price.fromJson(Map<String, dynamic> json) => _$PriceFromJson(json);
 
   /// Copies a Price and modifies selected fields.
-  Price copyWith({Product product, Store store, double price}) {
+  Price copyWith(
+      {@required String id, Product product, Store store, double price}) {
     return Price(
       id: id,
       timestamp: DateTime.now(),
@@ -26,7 +34,7 @@ class Price extends Entity {
   }
 
   /// Automatically generated unique id;
-  int id;
+  final String id;
 
   /// The product
   final Product product;
@@ -42,4 +50,10 @@ class Price extends Entity {
 
   /// Converts price to JSON.
   Map<String, dynamic> toJson() => _$PriceToJson(this);
+
+  @override
+  List<Object> get props => [id];
+
+  @override
+  bool get stringify => true;
 }

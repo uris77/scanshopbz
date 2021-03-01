@@ -44,7 +44,6 @@ class PricesDao extends Dao<Price> {
     final snapshots = await _pricesStore.find(await _db, finder: finder);
     return snapshots.map((snapshot) {
       final price = Price.fromJson(snapshot.value);
-      price.id = snapshot.key;
       return price;
     }).toList();
   }
@@ -66,7 +65,6 @@ class PricesDao extends Dao<Price> {
     final snapshots = await _pricesStore.find(await _db, finder: finder);
     return snapshots.map((snapshot) {
       final price = Price.fromJson(snapshot.value);
-      price.id = snapshot.key;
       return price;
     }).toList();
   }
@@ -77,7 +75,6 @@ class PricesDao extends Dao<Price> {
     final snapshots = await _pricesStore.find(await _db, finder: finder);
     return snapshots.map((snapshot) {
       final price = Price.fromJson(snapshot.value);
-      price.id = snapshot.key;
       return price;
     }).toList();
   }
@@ -89,7 +86,6 @@ class PricesDao extends Dao<Price> {
     final snapshots = await _pricesStore.find(await _db, finder: finder);
     return snapshots.map((snapshot) {
       final price = Price.fromJson(snapshot.value);
-      price.id = snapshot.key;
       return price;
     }).toList();
   }
@@ -105,7 +101,6 @@ class PricesDao extends Dao<Price> {
         await _pricesStore.find(await _db, finder: Finder(filter: filter));
     return snapshots.map((snapshot) {
       final price = Price.fromJson(snapshot.value);
-      price.id = snapshot.key;
       return price;
     }).toList();
   }

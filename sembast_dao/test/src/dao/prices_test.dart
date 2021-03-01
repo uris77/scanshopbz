@@ -57,6 +57,7 @@ main() {
         final products = await productsDao.getAllSortedByName();
         for (var product in products) {
           final price = Price(
+              id: uuid.v1(),
               product: product,
               store: store,
               price: 11,

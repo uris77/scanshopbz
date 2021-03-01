@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:meta/meta.dart';
 import 'package:scanshop_api/api.dart';
 
 part 'address.g.dart';
@@ -8,12 +9,11 @@ part 'address.g.dart';
 /// It only represents the Country, Street, Locality, Name and Admin Area.
 /// There is no need for zipcode because it is not applicable to Belize.
 @JsonSerializable()
-// ignore: must_be_immutable
 class Address extends Entity implements Equatable {
   /// Constructor
   Address(
-      {this.id,
-      this.name,
+      {@required this.id,
+      @required this.name,
       this.street,
       this.locality,
       this.administrativeArea,
@@ -25,7 +25,8 @@ class Address extends Entity implements Equatable {
 
   /// Copies an Address and modifies only select fields.
   Address copyWith(
-      {String name,
+      {@required String id,
+      @required String name,
       String street,
       String locality,
       String administrativeArea}) {
@@ -37,8 +38,8 @@ class Address extends Entity implements Equatable {
         country: country);
   }
 
-  /// Automatically generated unique id
-  int id;
+  /// unique id
+  final String id;
 
   /// The name of the address.
   /// We should be using the geocoding package to retrieve this information
