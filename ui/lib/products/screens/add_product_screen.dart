@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scanshop/constants/textLabels.dart';
 import 'package:scanshop/products/bloc/products_bloc.dart';
 import 'package:scanshop/repositories/id_generator.dart';
+import 'package:scanshop/routes.dart';
 import 'package:scanshop_models/models.dart';
 
 typedef OnSaveCallback = Function(Product product);
@@ -37,18 +38,26 @@ class _AddProductScreenState extends State<AddProductScreen> {
   Widget _body(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20),
-      child: Column(
-        children: [
-          Center(
-              child: Text('Create Product',
-                  style: Theme.of(context).textTheme.headline4)),
-          Divider(
-            color: Theme.of(context).primaryColor,
-            thickness: 3,
-          ),
-          _form(context),
-        ],
-      ),
+      child:
+          BlocConsumer<ProductsBloc, ProductsState>(listener: (context, state) {
+        if (state is ProductsLoadSuccess) {
+          Navigator.pushNamedAndRemoveUntil(
+              context, AppRoutes.products, ModalRoute.withName(AppRoutes.home));
+        }
+      }, builder: (context, state) {
+        return Column(
+          children: [
+            Center(
+                child: Text('Create Product',
+                    style: Theme.of(context).textTheme.headline4)),
+            Divider(
+              color: Theme.of(context).primaryColor,
+              thickness: 3,
+            ),
+            _form(context),
+          ],
+        );
+      }),
     );
   }
 
@@ -67,18 +76,14 @@ class _AddProductScreenState extends State<AddProductScreen> {
 }
 
 class _AddProductForm extends StatefulWidget {
-  _AddProductForm(
-      {Key key,
-      @required this.widthScale,
-      @required this.margin,
-      @required this.onSave})
-      : super(key: key);
+  _AddProductForm({
+    Key key,
+    @required this.widthScale,
+    @required this.margin,
+  }) : super(key: key);
 
   final double widthScale;
   final EdgeInsets margin;
-
-  /// callback when a product is saved
-  final OnSaveCallback onSave;
 
   @override
   _AddProductFormState createState() => _AddProductFormState();
@@ -180,7 +185,6 @@ class _AddProductFormState extends State<_AddProductForm> {
                       category: _category,
                       manufacturer: _manufacturer);
                   context.read<ProductsBloc>().add(AddProduct(product));
-                  Navigator.pop(context);
                 }
               },
               child: const Text('Save'),
