@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scanshop/products/bloc/products_bloc.dart';
 import 'package:scanshop/products/screens/add_product_screen.dart';
 import 'package:scanshop/products/screens/products.dart';
-import 'package:scanshop/repositories/dbpath_generator.dart';
 import 'package:scanshop/routes.dart';
 import 'package:scanshop/screens/home.dart';
 import 'package:scanshop/stores/bloc/stores_bloc.dart';
@@ -23,7 +22,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 // ignore: missing_return
 Widget _buildRoutes(BuildContext context, RouteSettings settings) {
   var arguments = settings.arguments;
-  var dbpathGenerator = context.read<DbpathGenerator>();
   switch (settings.name) {
     case AppRoutes.home:
       return Home();
@@ -31,10 +29,12 @@ Widget _buildRoutes(BuildContext context, RouteSettings settings) {
       return BlocProvider.value(
           value: BlocProvider.of<ProductsBloc>(context)..add(LoadProducts()),
           child: Products());
+
     case AppRoutes.addProduct:
       return BlocProvider.value(
           value: BlocProvider.of<ProductsBloc>(context),
           child: AddProductScreen(isEditing: false));
+
     case AppRoutes.stores:
       return BlocProvider.value(
         value: BlocProvider.of<StoresBloc>(context)..add(LoadStores()),

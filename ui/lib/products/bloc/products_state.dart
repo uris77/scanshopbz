@@ -28,3 +28,15 @@ class ProductsLoadSuccess extends ProductsState {
 
 /// State that indicates failure while loading products.
 class ProductsLoadFailure extends ProductsState {}
+
+/// Indicates that a product was successfully saved.
+class ProductSavedSuccessfully extends ProductsState {
+  ///Constructor
+  const ProductSavedSuccessfully({this.product});
+
+  /// Product that was saved.
+  final Product product;
+
+  @override
+  List<Object> get props => [product];
+}

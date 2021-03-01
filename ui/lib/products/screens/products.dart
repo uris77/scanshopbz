@@ -24,6 +24,7 @@ class Products extends StatelessWidget {
 
   Widget _buildBody(BuildContext context) {
     return BlocBuilder<ProductsBloc, ProductsState>(builder: (context, state) {
+      print('STATE: $state');
       if (state is ProductsLoadInProgress) {
         return const CircularProgressIndicator();
       } else if (state is ProductsLoadSuccess) {
