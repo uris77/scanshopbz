@@ -42,10 +42,7 @@ class PricesDao extends Dao<Price> {
   Future<List<Price>> getAllSortedByName() async {
     final finder = Finder(sortOrders: [SortOrder('name.product.name')]);
     final snapshots = await _pricesStore.find(await _db, finder: finder);
-    return snapshots.map((snapshot) {
-      final price = Price.fromJson(snapshot.value);
-      return price;
-    }).toList();
+    return snapshots.map(_snapshotToPrice).toList();
   }
 
   @override
@@ -63,20 +60,14 @@ class PricesDao extends Dao<Price> {
   Future<List<Price>> getAllForProduct(Product product) async {
     final finder = Finder(filter: Filter.equals('product.name', product.name));
     final snapshots = await _pricesStore.find(await _db, finder: finder);
-    return snapshots.map((snapshot) {
-      final price = Price.fromJson(snapshot.value);
-      return price;
-    }).toList();
+    return snapshots.map(_snapshotToPrice).toList();
   }
 
   /// Retrieves all prices at a store.
   Future<List<Price>> getAllPricesAtStore(Store store) async {
     final finder = Finder(filter: Filter.equals('store.id', store.id));
     final snapshots = await _pricesStore.find(await _db, finder: finder);
-    return snapshots.map((snapshot) {
-      final price = Price.fromJson(snapshot.value);
-      return price;
-    }).toList();
+    return snapshots.map(_snapshotToPrice).toList();
   }
 
   /// Gets all prices for a specified category
@@ -84,10 +75,7 @@ class PricesDao extends Dao<Price> {
     final finder =
         Finder(filter: Filter.equals('product.category.name', category.name));
     final snapshots = await _pricesStore.find(await _db, finder: finder);
-    return snapshots.map((snapshot) {
-      final price = Price.fromJson(snapshot.value);
-      return price;
-    }).toList();
+    return snapshots.map(_snapshotToPrice).toList();
   }
 
   /// Gets all prices by store and category
@@ -99,9 +87,10 @@ class PricesDao extends Dao<Price> {
     ]);
     final snapshots =
         await _pricesStore.find(await _db, finder: Finder(filter: filter));
-    return snapshots.map((snapshot) {
-      final price = Price.fromJson(snapshot.value);
-      return price;
-    }).toList();
+    return snapshots.map(_snapshotToPrice).toList();
+  }
+
+  Price _snapshotToPrice(RecordSnapshot<int, Map<String, dynamic>> snapshot) {
+    return Price.fromJson(snapshot.value);
   }
 }
