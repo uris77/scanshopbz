@@ -19,3 +19,19 @@ abstract class Dao<T extends Entity> {
   /// Clears all the records in the database.
   Future<void> clear();
 }
+
+/// Query features for products
+abstract class ProductQuery {
+  /// counts the number of products in a category
+  Future<int> countByCategory(String categoryName);
+}
+
+/// Query features for prices
+abstract class PriceQuery<T extends Entity, E extends Entity,
+    S extends Entity> {
+  /// retrieves prices for the specified product
+  Future<List<E>> getAllForProduct(T product);
+
+  /// Retrieves all prices at a store.
+  Future<List<E>> getAllPricesAtStore(S store);
+}
