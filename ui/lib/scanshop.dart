@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:scanshop/prices/bloc/prices_bloc.dart';
 import 'package:scanshop/products/bloc/products_bloc.dart';
 import 'package:scanshop/repositories/dbpath_generator.dart';
 import 'package:scanshop/repositories/id_generator.dart';
@@ -32,12 +33,14 @@ class _ScanshopState extends State<Scanshop> {
   String dbPath;
   ProductsBloc productsBloc;
   StoresBloc storesBloc;
+  PricesBloc pricesBloc;
 
   @override
   void initState() {
     dbPath = widget.dbpathGenerator.dbpath;
     productsBloc = ProductsBloc(productsDao: ProductsDao(databaseFile: dbPath));
     storesBloc = StoresBloc(storesDao: StoresDao(databaseFile: dbPath));
+    pricesBloc = PricesBloc(pricesDao: PricesDao(databaseFile: dbPath));
     super.initState();
   }
 
@@ -53,10 +56,7 @@ class _ScanshopState extends State<Scanshop> {
           providers: [
             BlocProvider.value(value: productsBloc),
             BlocProvider.value(value: storesBloc),
-            // BlocProvider<ProductsBloc>(create: (_) => productsBloc),
-            // BlocProvider<StoresBloc>(create: (_) {
-            //   return storesBloc;
-            // })
+            BlocProvider.value(value: pricesBloc),
           ],
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
