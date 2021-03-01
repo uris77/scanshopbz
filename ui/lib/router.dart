@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:scanshop/prices/bloc/prices_bloc.dart';
+import 'package:scanshop/prices/screens/product_prices_screen.dart';
 import 'package:scanshop/products/bloc/products_bloc.dart';
 import 'package:scanshop/products/screens/add_product_screen.dart';
 import 'package:scanshop/products/screens/products.dart';
@@ -34,6 +36,15 @@ Widget _buildRoutes(BuildContext context, RouteSettings settings) {
       return BlocProvider.value(
           value: BlocProvider.of<ProductsBloc>(context),
           child: AddProductScreen(isEditing: false));
+
+    case AppRoutes.productPrices:
+      final map = arguments as Map<String, dynamic> ?? {};
+      final product = map['product'] as Product;
+      return BlocProvider.value(
+          value: BlocProvider.of<PricesBloc>(context),
+          child: ProductPricesScreen(
+            product: product,
+          ));
 
     case AppRoutes.stores:
       return BlocProvider.value(

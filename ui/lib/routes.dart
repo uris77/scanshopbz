@@ -9,6 +9,9 @@ class AppRoutes {
   /// Route for adding a product
   static const addProduct = '/products/add';
 
+  /// Route for the product prices
+  static const productPrices = '/products/prices';
+
   /// Stores
   static const stores = '/stores';
 
