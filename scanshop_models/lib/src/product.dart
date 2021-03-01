@@ -1,4 +1,6 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:meta/meta.dart';
 import 'package:scanshop_api/api.dart';
 import 'package:scanshop_models/src/product_category.dart';
 
@@ -6,10 +8,11 @@ part 'product.g.dart';
 
 /// Represents a Grocery Product
 @JsonSerializable(nullable: true, explicitToJson: true)
-class Product extends Entity {
+class Product extends Entity implements Equatable {
   /// constructs a product
   Product(
-      {this.name,
+      {@required this.id,
+      @required this.name,
       this.description,
       this.tags,
       this.barcode,
@@ -21,8 +24,8 @@ class Product extends Entity {
     return _$ProductFromJson(json);
   }
 
-  /// Automatically generated & unique id
-  int id;
+  /// Unique Id
+  final String id;
 
   /// name of the product
   final String name;
@@ -46,4 +49,11 @@ class Product extends Entity {
 
   /// Marshals a product to JSON
   Map<String, dynamic> toJson() => _$ProductToJson(this);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [id, name];
+
+  @override
+  bool get stringify => true;
 }

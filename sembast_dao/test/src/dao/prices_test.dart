@@ -17,11 +17,12 @@ main() {
     setUpAll(() async {
       // Create some product fixtures
       final beverages = [
-        Product(name: 'tea', category: beverageCategory),
-        Product(name: 'coke', category: beverageCategory),
-        Product(name: 'coffee', category: beverageCategory),
-        Product(name: 'beer', category: beverageCategory),
-        Product(name: 'orange juice', category: beverageCategory),
+        Product(id: uuid.v1(), name: 'tea', category: beverageCategory),
+        Product(id: uuid.v1(), name: 'coke', category: beverageCategory),
+        Product(id: uuid.v1(), name: 'coffee', category: beverageCategory),
+        Product(id: uuid.v1(), name: 'beer', category: beverageCategory),
+        Product(
+            id: uuid.v1(), name: 'orange juice', category: beverageCategory),
       ];
 
       // Save all the products

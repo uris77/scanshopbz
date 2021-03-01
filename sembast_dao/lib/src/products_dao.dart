@@ -58,7 +58,6 @@ class ProductsDao extends Dao<Product> {
     final snapshots = await _productStore.find(await _db, finder: finder);
     return snapshots.map((snapshot) {
       final product = Product.fromJson(snapshot.value);
-      product.id = snapshot.key;
       return product;
     }).toList();
   }
@@ -85,7 +84,6 @@ class ProductsDao extends Dao<Product> {
     final finder = Finder(filter: filter);
     final snapshot = await _productStore.findFirst(await _db, finder: finder);
     final product = Product.fromJson(snapshot.value);
-    product.id = snapshot.key;
     return product;
   }
 }
