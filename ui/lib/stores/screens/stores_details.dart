@@ -3,11 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:scanshop/constants/textLabels.dart';
+import 'package:scanshop/repositories/id_generator.dart';
+import 'package:scanshop/routes.dart';
 import 'package:scanshop/stores/bloc/stores_bloc.dart';
 import 'package:scanshop_models/models.dart';
 
 /// Displays the Stores Details.
-class StoreDetailsScreen extends StatelessWidget {
+class StoreDetailsScreen extends StatefulWidget {
   /// Constructor
   StoreDetailsScreen({Key key, @required this.store}) : super(key: key);
 
@@ -15,50 +17,74 @@ class StoreDetailsScreen extends StatelessWidget {
   final Store store;
 
   @override
+  _StoreDetailsScreenState createState() => _StoreDetailsScreenState();
+}
+
+class _StoreDetailsScreenState extends State<StoreDetailsScreen> {
+  Store _store;
+  @override
+  void initState() {
+    _store = widget.store;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        context.read<StoresBloc>().add(LoadStores());
+        // context.read<StoresBloc>().add(LoadStores());
         return true;
       },
       child: Scaffold(
         appBar: _appBar(context),
-        body: BlocListener<StoresBloc, StoresState>(
-            listener: (context, state) {
-              if (state is StoresSavingInProgress) {
-                Scaffold.of(context).showSnackBar(
-                    const SnackBar(content: Text('updating store....')));
-              }
-            },
-            child: _StoreDetails(store: store)),
+        body: BlocConsumer<StoresBloc, StoresState>(listener: (context, state) {
+          if (state is StoresSavingInProgress) {
+            Scaffold.of(context).showSnackBar(const SnackBar(
+              content: Text('updating store....'),
+              duration: Duration(seconds: 1),
+            ));
+          }
+          if (state is StoresSavedSuccessfully) {
+            Scaffold.of(context).showSnackBar(const SnackBar(
+              content: Text('store updated successfully...'),
+              duration: Duration(seconds: 1),
+            ));
+          }
+        }, builder: (context, state) {
+          if (state is StoresLoadSuccess) {
+            return _StoreDetails(store: widget.store);
+          }
+          if (state is StoresSavingInProgress) {
+            return const CircularProgressIndicator();
+          }
+          if (state is StoresSavedSuccessfully) {
+            return _StoreDetails(store: state.store);
+          }
+          return _StoreDetails(store: _store);
+        }),
       ),
     );
   }
 
   PreferredSizeWidget _appBar(BuildContext context) {
     return AppBar(
-      automaticallyImplyLeading: true,
+      // automaticallyImplyLeading: true,
+      leading: IconButton(
+        iconSize: 40,
+        icon: const Icon(Icons.chevron_left),
+        onPressed: () {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              AppRoutes.stores, ModalRoute.withName(AppRoutes.home));
+        },
+      ),
       title: AppBarTitle(),
     );
   }
 }
 
-class _StoreDetails extends StatefulWidget {
+class _StoreDetails extends StatelessWidget {
   _StoreDetails({Key key, @required this.store}) : super(key: key);
   final Store store;
-
-  @override
-  __StoreDetailsState createState() => __StoreDetailsState();
-}
-
-class __StoreDetailsState extends State<_StoreDetails> {
-  Store store;
-
-  @override
-  void initState() {
-    store = widget.store;
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +99,7 @@ class __StoreDetailsState extends State<_StoreDetails> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Expanded(
-                  flex: 1,
+                  flex: 0,
                   child: Text(
                     store.name,
                     style: Theme.of(context).textTheme.headline4,
@@ -81,32 +107,29 @@ class __StoreDetailsState extends State<_StoreDetails> {
                 ),
                 if (store.geoLocation != null)
                   Expanded(
-                      flex: 1,
+                      flex: 4,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Row(
-                          children: [
-                            Text(
-                                '${store.address.street}, '
-                                '${store.address.locality}',
-                                style: Theme.of(context).textTheme.bodyText1),
-                          ],
-                        ),
+                        child: Text(
+                            '${store.address.street}, '
+                            '${store.address.locality}',
+                            style: Theme.of(context).textTheme.bodyText1),
                       )),
                 RaisedButton(
-                  child: const Text('Get Location'),
+                  child: const Text('Update Location'),
                   onPressed: () async {
                     var position = await _determinePosition();
-                    var address = await (_getAddressFromLatLng(position));
+                    var address = await (_getAddressFromLatLng(
+                        context.read<IdGenerator>(), position));
 
-                    setState(() {
-                      store = store.copyWith(
-                          geoLocation: GeoLocation(
-                              lat: position.latitude, lon: position.longitude),
-                          address: address);
-                    });
+                    var updatedStore = store.copyWith(
+                        id: store.id,
+                        geoLocation: GeoLocation(
+                            lat: position.latitude, lon: position.longitude),
+                        address: address);
+
                     var bloc = context.read<StoresBloc>();
-                    bloc.add(UpdateStore(store));
+                    bloc.add(UpdateStore(updatedStore));
                   },
                 ),
                 const Spacer(),
@@ -146,19 +169,16 @@ class __StoreDetailsState extends State<_StoreDetails> {
     return await Geolocator.getCurrentPosition();
   }
 
-  Future<Address> _getAddressFromLatLng(Position position) async {
+  Future<Address> _getAddressFromLatLng(
+      IdGenerator idGenerator, Position position) async {
     Address address;
     var p =
         await placemarkFromCoordinates(position.latitude, position.longitude);
     if (p.isNotEmpty) {
       var place = p[0];
 
-      print('Locality: ${place.locality}, SubLocality: ${place.subLocality}, '
-          'Admin Area: ${place.administrativeArea}, '
-          'SubAdmin: ${place.subAdministrativeArea},'
-          'Street: ${place.street}, Name: ${place.name}, '
-          'Country: ${place.country}');
       address = Address(
+        id: idGenerator.id,
         name: place.name,
         street: place.street,
         locality: place.locality,

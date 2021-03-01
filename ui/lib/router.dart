@@ -11,7 +11,6 @@ import 'package:scanshop/stores/screens/add_store_screen.dart';
 import 'package:scanshop/stores/screens/screens.dart';
 import 'package:scanshop/stores/screens/stores_details.dart';
 import 'package:scanshop_models/models.dart';
-import 'package:sembast_dao/sembast_dao.dart';
 
 /// generates the MaterialPageRoutes
 Route<dynamic> generateRoute(RouteSettings settings) {
@@ -29,32 +28,30 @@ Widget _buildRoutes(BuildContext context, RouteSettings settings) {
     case AppRoutes.home:
       return Home();
     case AppRoutes.products:
-      return BlocProvider<ProductsBloc>(
-          create: (_) => ProductsBloc(
-              productsDao: ProductsDao(databaseFile: dbpathGenerator.dbpath))
-            ..add(LoadProducts()),
+      return BlocProvider.value(
+          value: BlocProvider.of<ProductsBloc>(context)..add(LoadProducts()),
           child: Products());
     case AppRoutes.addProduct:
-      return BlocProvider<ProductsBloc>(
-          create: (_) => ProductsBloc(
-              productsDao: ProductsDao(databaseFile: dbpathGenerator.dbpath)),
+      return BlocProvider.value(
+          value: BlocProvider.of<ProductsBloc>(context),
           child: AddProductScreen(isEditing: false));
     case AppRoutes.stores:
-      return BlocProvider<StoresBloc>(
-          create: (_) =>
-              BlocProvider.of<StoresBloc>(context)..add(LoadStores()),
-          child: StoresScreen());
+      return BlocProvider.value(
+        value: BlocProvider.of<StoresBloc>(context)..add(LoadStores()),
+        child: StoresScreen(),
+      );
+
     case AppRoutes.addStore:
-      return BlocProvider<StoresBloc>(
-          create: (_) => BlocProvider.of<StoresBloc>(context),
-          child: AddStoreScreen());
+      return BlocProvider.value(
+          value: BlocProvider.of<StoresBloc>(context), child: AddStoreScreen());
+
     case AppRoutes.store:
       final map = arguments as Map<String, dynamic> ?? {};
       final store = map['store'] as Store;
-      return BlocProvider<StoresBloc>(
-          create: (_) =>
-              BlocProvider.of<StoresBloc>(context)..add(LoadStores()),
+      return BlocProvider.value(
+          value: BlocProvider.of<StoresBloc>(context),
           child: StoreDetailsScreen(store: store));
+
     default:
       return Home();
   }
