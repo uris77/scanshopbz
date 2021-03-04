@@ -12,17 +12,17 @@ part 'store.g.dart';
 class Store extends Entity implements Equatable {
   /// constructs a store
   Store(
-      {@required this.id, @required this.name, this.geoLocation, this.address});
+      {required this.id, required this.name, this.geoLocation, this.address});
 
   /// converts a JSON object to Store
   factory Store.fromJson(Map<String, dynamic> json) => _$StoreFromJson(json);
 
   /// Copies a store and only modify certain fields.
   Store copyWith(
-      {@required String id,
-      String name,
-      GeoLocation geoLocation,
-      Address address}) {
+      {required String id,
+      String? name,
+      GeoLocation? geoLocation,
+      Address? address}) {
     return Store(
       id: id,
       name: name ?? this.name,
@@ -32,22 +32,22 @@ class Store extends Entity implements Equatable {
   }
 
   /// Automatically generated & unique id
-  final String id;
+  final String? id;
 
   /// name of the store
-  final String name;
+  final String? name;
 
   /// the geolocation
-  final GeoLocation geoLocation;
+  final GeoLocation? geoLocation;
 
   /// the address
-  final Address address;
+  final Address? address;
 
   /// Converts a Store to JSON
   Map<String, dynamic> toJson() => _$StoreToJson(this);
 
   @override
-  List<Object> get props => [id];
+  List<Object?> get props => [id];
 
   @override
   bool get stringify => true;

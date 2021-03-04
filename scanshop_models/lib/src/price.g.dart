@@ -8,14 +8,14 @@ part of 'price.dart';
 
 Price _$PriceFromJson(Map<String, dynamic> json) {
   return Price(
-    id: json['id'] as String,
+    id: json['id'] as String?,
     product: json['product'] == null
         ? null
         : Product.fromJson(json['product'] as Map<String, dynamic>),
     store: json['store'] == null
         ? null
         : Store.fromJson(json['store'] as Map<String, dynamic>),
-    price: (json['price'] as num)?.toDouble(),
+    price: (json['price'] as num?)?.toDouble(),
     timestamp: json['timestamp'] == null
         ? null
         : DateTime.parse(json['timestamp'] as String),

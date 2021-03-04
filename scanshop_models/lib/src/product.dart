@@ -11,8 +11,8 @@ part 'product.g.dart';
 class Product extends Entity implements Equatable {
   /// constructs a product
   Product(
-      {@required this.id,
-      @required this.name,
+      {required this.id,
+      required this.name,
       this.description,
       this.tags,
       this.barcode,
@@ -25,34 +25,34 @@ class Product extends Entity implements Equatable {
   }
 
   /// Unique Id
-  final String id;
+  final String? id;
 
   /// name of the product
-  final String name;
+  final String? name;
 
   /// tags provide additional context and classification
   @JsonKey(defaultValue: [])
-  final List<String> tags;
+  final List<String>? tags;
 
   /// the barcode of the item.
   /// if the product does not have a barcode, this value is an empty string.
-  final String barcode;
+  final String? barcode;
 
   /// provides some comments that describe the product
-  final String description;
+  final String? description;
 
   /// the category for the product.
-  final ProductCategory category;
+  final ProductCategory? category;
 
   /// the manufacturer
-  final String manufacturer;
+  final String? manufacturer;
 
   /// Marshals a product to JSON
   Map<String, dynamic> toJson() => _$ProductToJson(this);
 
   @override
   // TODO: implement props
-  List<Object> get props => [id, name];
+  List<Object?> get props => [id, name];
 
   @override
   bool get stringify => true;

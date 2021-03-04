@@ -14,14 +14,14 @@ class ProductCategory implements Equatable {
       _$ProductCategoryFromJson(json);
 
   /// the name of the product category.
-  final String name;
+  final String? name;
 
   /// convert a product category to a JSON object.
   Map<String, dynamic> toJson() => _$ProductCategoryToJson(this);
 
   @override
   // TODO: implement props
-  List<Object> get props => [name];
+  List<Object?> get props => [name];
 
   @override
   bool get stringify => true;

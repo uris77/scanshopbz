@@ -12,7 +12,7 @@ part 'price.g.dart';
 class Price extends Entity implements Equatable {
   /// Constructor
   Price(
-      {@required this.id,
+      {required this.id,
       this.product,
       this.store,
       this.price,
@@ -23,7 +23,7 @@ class Price extends Entity implements Equatable {
 
   /// Copies a Price and modifies selected fields.
   Price copyWith(
-      {@required String id, Product product, Store store, double price}) {
+      {required String id, Product? product, Store? store, double? price}) {
     return Price(
       id: id,
       timestamp: DateTime.now(),
@@ -34,25 +34,25 @@ class Price extends Entity implements Equatable {
   }
 
   /// Automatically generated unique id;
-  final String id;
+  final String? id;
 
   /// The product
-  final Product product;
+  final Product? product;
 
   /// The store
-  final Store store;
+  final Store? store;
 
   /// The price
-  final double price;
+  final double? price;
 
   /// The timestamp when it was created.
-  final DateTime timestamp;
+  final DateTime? timestamp;
 
   /// Converts price to JSON.
   Map<String, dynamic> toJson() => _$PriceToJson(this);
 
   @override
-  List<Object> get props => [id];
+  List<Object?> get props => [id];
 
   @override
   bool get stringify => true;

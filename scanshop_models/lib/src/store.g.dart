@@ -8,8 +8,8 @@ part of 'store.dart';
 
 Store _$StoreFromJson(Map<String, dynamic> json) {
   return Store(
-    id: json['id'] as String,
-    name: json['name'] as String,
+    id: json['id'] as String?,
+    name: json['name'] as String?,
     geoLocation: json['geoLocation'] == null
         ? null
         : GeoLocation.fromJson(json['geoLocation'] as Map<String, dynamic>),

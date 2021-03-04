@@ -8,8 +8,8 @@ part of 'geo_location.dart';
 
 GeoLocation _$GeoLocationFromJson(Map<String, dynamic> json) {
   return GeoLocation(
-    lat: (json['lat'] as num)?.toDouble(),
-    lon: (json['lon'] as num)?.toDouble(),
+    lat: (json['lat'] as num?)?.toDouble(),
+    lon: (json['lon'] as num?)?.toDouble(),
   );
 }
 

@@ -8,15 +8,15 @@ part of 'product.dart';
 
 Product _$ProductFromJson(Map<String, dynamic> json) {
   return Product(
-    id: json['id'] as String,
-    name: json['name'] as String,
-    description: json['description'] as String,
-    tags: (json['tags'] as List)?.map((e) => e as String)?.toList() ?? [],
-    barcode: json['barcode'] as String,
+    id: json['id'] as String?,
+    name: json['name'] as String?,
+    description: json['description'] as String?,
+    tags: (json['tags'] as List?)?.map((e) => e as String)?.toList() ?? [],
+    barcode: json['barcode'] as String?,
     category: json['category'] == null
         ? null
         : ProductCategory.fromJson(json['category'] as Map<String, dynamic>),
-    manufacturer: json['manufacturer'] as String,
+    manufacturer: json['manufacturer'] as String?,
   );
 }
 

@@ -8,7 +8,7 @@ part of 'product_category.dart';
 
 ProductCategory _$ProductCategoryFromJson(Map<String, dynamic> json) {
   return ProductCategory(
-    name: json['name'] as String,
+    name: json['name'] as String?,
   );
 }
 

@@ -15,16 +15,16 @@ class GeoLocation extends Entity implements Equatable {
       _$GeoLocationFromJson(json);
 
   /// The latitude
-  final double lat;
+  final double? lat;
 
   /// The longitude
-  final double lon;
+  final double? lon;
 
   /// Converts a GeoLocation to JSON
   Map<String, dynamic> toJson() => _$GeoLocationToJson(this);
 
   @override
-  List<Object> get props => [lat, lon];
+  List<Object?> get props => [lat, lon];
 
   @override
   bool get stringify => true;

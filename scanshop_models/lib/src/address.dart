@@ -12,8 +12,8 @@ part 'address.g.dart';
 class Address extends Entity implements Equatable {
   /// Constructor
   Address(
-      {@required this.id,
-      @required this.name,
+      {required this.id,
+      required this.name,
       this.street,
       this.locality,
       this.administrativeArea,
@@ -25,11 +25,11 @@ class Address extends Entity implements Equatable {
 
   /// Copies an Address and modifies only select fields.
   Address copyWith(
-      {@required String id,
-      @required String name,
-      String street,
-      String locality,
-      String administrativeArea}) {
+      {required String id,
+      required String name,
+      String? street,
+      String? locality,
+      String? administrativeArea}) {
     return Address(
         id: id,
         name: name ?? this.name,
@@ -39,31 +39,31 @@ class Address extends Entity implements Equatable {
   }
 
   /// unique id
-  final String id;
+  final String? id;
 
   /// The name of the address.
   /// We should be using the geocoding package to retrieve this information
   /// from a pair of coordindates.
-  final String name;
+  final String? name;
 
   /// The name of the street.
-  final String street;
+  final String? street;
 
   /// The name of the locality. This can be the name of the town,
   /// city or village.
-  final String locality;
+  final String? locality;
 
   /// The name of the administrative area. For Belize, this is the District.
-  final String administrativeArea;
+  final String? administrativeArea;
 
   /// The name of the country. This is generally just Belize.
-  final String country;
+  final String? country;
 
   /// Converts an Address to JSON
   Map<String, dynamic> toJson() => _$AddressToJson(this);
 
   @override
-  List<Object> get props => [id, name];
+  List<Object?> get props => [id, name];
 
   @override
   bool get stringify => true;
