@@ -1,30 +1,18 @@
-import 'package:equatable/equatable.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
+part 'product_category.freezed.dart';
 part 'product_category.g.dart';
 
 /// The categories of the products
-@JsonSerializable(nullable: false)
-class ProductCategory implements Equatable {
-  /// constructs a product category
-  const ProductCategory({this.name});
+@freezed
+class ProductCategory with _$ProductCategory {
+  /// Constructor
+  @JsonSerializable(explicitToJson: true)
+  const factory ProductCategory({required String name}) = _ProductCategory;
 
-  /// Create a ProductCategory from a JSON object.
+  /// Converts to ProductCategory from json
   factory ProductCategory.fromJson(Map<String, dynamic> json) =>
       _$ProductCategoryFromJson(json);
-
-  /// the name of the product category.
-  final String? name;
-
-  /// convert a product category to a JSON object.
-  Map<String, dynamic> toJson() => _$ProductCategoryToJson(this);
-
-  @override
-  // TODO: implement props
-  List<Object?> get props => [name];
-
-  @override
-  bool get stringify => true;
 }
 
 /// the list of product categories available.

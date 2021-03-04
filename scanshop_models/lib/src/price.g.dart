@@ -6,26 +6,20 @@ part of 'price.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Price _$PriceFromJson(Map<String, dynamic> json) {
-  return Price(
-    id: json['id'] as String?,
-    product: json['product'] == null
-        ? null
-        : Product.fromJson(json['product'] as Map<String, dynamic>),
-    store: json['store'] == null
-        ? null
-        : Store.fromJson(json['store'] as Map<String, dynamic>),
-    price: (json['price'] as num?)?.toDouble(),
-    timestamp: json['timestamp'] == null
-        ? null
-        : DateTime.parse(json['timestamp'] as String),
+_$_Price _$_$_PriceFromJson(Map<String, dynamic> json) {
+  return _$_Price(
+    id: json['id'] as String,
+    product: Product.fromJson(json['product'] as Map<String, dynamic>),
+    store: Store.fromJson(json['store'] as Map<String, dynamic>),
+    price: (json['price'] as num).toDouble(),
+    timestamp: DateTime.parse(json['timestamp'] as String),
   );
 }
 
-Map<String, dynamic> _$PriceToJson(Price instance) => <String, dynamic>{
+Map<String, dynamic> _$_$_PriceToJson(_$_Price instance) => <String, dynamic>{
       'id': instance.id,
-      'product': instance.product?.toJson(),
-      'store': instance.store?.toJson(),
+      'product': instance.product.toJson(),
+      'store': instance.store.toJson(),
       'price': instance.price,
-      'timestamp': instance.timestamp?.toIso8601String(),
+      'timestamp': instance.timestamp.toIso8601String(),
     };

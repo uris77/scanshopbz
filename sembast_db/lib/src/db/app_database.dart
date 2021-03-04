@@ -15,22 +15,22 @@ class AppDatabase {
       AppDatabase._(fileName: filename);
 
   /// The name of the file where the database contents are stored
-  final String fileName;
+  final String? fileName;
   // = 'scanshopbz_demo.db';
 
   /// accessor for an instance of the database
   static AppDatabase instance(String fileName) => _singleton(fileName);
 
   //Completer is used for transforming synchronous code into async code
-  Completer<Database> _dbOpenCompleter;
+  Completer<Database>? _dbOpenCompleter;
 
   Future _openDatabase() async {
     // platform-specific directory where persistent app data can be stored.
     // final appDocumentDir = await getApplicationDocumentsDirectory();
     // Path with the form: /platform-specific-director/demo.db
-    final dbPath = fileName;
+    final dbPath = fileName!;
     final database = await databaseFactoryIo.openDatabase(dbPath);
-    _dbOpenCompleter.complete(database);
+    _dbOpenCompleter!.complete(database);
   }
 
   /// Database object accessor
@@ -41,6 +41,6 @@ class AppDatabase {
       await _openDatabase();
     }
 
-    return _dbOpenCompleter.future;
+    return _dbOpenCompleter!.future;
   }
 }

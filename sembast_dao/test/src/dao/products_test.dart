@@ -1,6 +1,7 @@
 import 'package:scanshop_models/models.dart';
 import 'package:sembast_dao/sembast_dao.dart';
 import 'package:test/test.dart';
+import 'package:uuid/uuid.dart';
 
 // ignore: always_declare_return_types
 main() {
@@ -11,9 +12,12 @@ main() {
       .firstWhere((element) => element.name.toLowerCase() == 'dairy');
   var fruitsVegsCategory = productCategories.firstWhere(
       (element) => element.name.toLowerCase() == 'fruits & vegetables');
+  var uuid = const Uuid();
+
   group('Products Dao', () {
     test('should persist a product', () async {
-      final product = Product(name: 'Tea', category: beverageCategory);
+      final product =
+          Product(id: uuid.v1(), name: 'Tea', category: beverageCategory);
       await dao.insert(product);
       final products = await dao.getAllSortedByName();
       final teas = products
@@ -26,23 +30,32 @@ main() {
       setUpAll(() async {
         // Create some product fixtures
         final beverages = [
-          Product(name: 'coke', category: beverageCategory),
-          Product(name: 'coffee', category: beverageCategory),
-          Product(name: 'beer', category: beverageCategory),
-          Product(name: 'orange juice', category: beverageCategory),
+          Product(id: uuid.v1(), name: 'coke', category: beverageCategory),
+          Product(id: uuid.v1(), name: 'coffee', category: beverageCategory),
+          Product(id: uuid.v1(), name: 'beer', category: beverageCategory),
+          Product(
+              id: uuid.v1(), name: 'orange juice', category: beverageCategory),
         ];
         final dairy = [
-          Product(name: 'milk', category: dairyCategory),
-          Product(name: 'Parmesan Cheese', category: dairyCategory),
+          Product(id: uuid.v1(), name: 'milk', category: dairyCategory),
+          Product(
+              id: uuid.v1(), name: 'Parmesan Cheese', category: dairyCategory),
         ];
         final fruitsAndVegetables = [
-          Product(name: 'grapes', category: fruitsVegsCategory),
-          Product(name: 'sweet pepper', category: fruitsVegsCategory),
-          Product(name: 'apple', category: fruitsVegsCategory),
-          Product(name: 'carrots', category: fruitsVegsCategory),
-          Product(name: 'red kidney beans', category: fruitsVegsCategory),
-          Product(name: 'onions', category: fruitsVegsCategory),
-          Product(name: 'white rice', category: fruitsVegsCategory),
+          Product(id: uuid.v1(), name: 'grapes', category: fruitsVegsCategory),
+          Product(
+              id: uuid.v1(),
+              name: 'sweet pepper',
+              category: fruitsVegsCategory),
+          Product(id: uuid.v1(), name: 'apple', category: fruitsVegsCategory),
+          Product(id: uuid.v1(), name: 'carrots', category: fruitsVegsCategory),
+          Product(
+              id: uuid.v1(),
+              name: 'red kidney beans',
+              category: fruitsVegsCategory),
+          Product(id: uuid.v1(), name: 'onions', category: fruitsVegsCategory),
+          Product(
+              id: uuid.v1(), name: 'white rice', category: fruitsVegsCategory),
         ];
 
         // Save all the products

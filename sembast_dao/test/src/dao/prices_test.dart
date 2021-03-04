@@ -11,7 +11,7 @@ main() {
   final storesDao = StoresDao(databaseFile: 'memory');
   var beverageCategory = productCategories
       .firstWhere((element) => element.name.toLowerCase() == 'beverages');
-  var uuid = Uuid();
+  var uuid = const Uuid();
 
   group('Prices', () {
     setUpAll(() async {
@@ -31,26 +31,43 @@ main() {
       }
     });
     group('persistence', () {
+      setUp(() async {
+        await storesDao.clear();
+        await pricesDao.clear();
+      });
+
       test('should save a product`s price', () async {
+        final storeName = '100 Store';
+        await storesDao.insert(Store(id: uuid.v1(), name: storeName));
+        var store = await storesDao.getByName(storeName);
+
         final tea = await productsDao.getByName('tea');
-        expect(tea.name, equals('tea'));
+        expect(tea!.name, equals('tea'));
         expect(tea.id, isNotNull);
 
         // assign a price
-        await pricesDao.insert(
-            Price(product: tea, price: 5.75, timestamp: DateTime.now()));
+        await pricesDao.insert(Price(
+            product: tea,
+            price: 5.75,
+            timestamp: DateTime.now(),
+            id: uuid.v1(),
+            store: store!));
         final prices = await pricesDao.getAllForProduct(tea);
         expect(prices.length, equals(1));
       });
     });
     group('querying', () {
+      setUpAll(() async {
+        await pricesDao.clear();
+      });
+
       test('should query all prices for a product in a store', () async {
         var id = uuid.v1();
         // Create and persist a store
         final storeName = '100 Store';
         await storesDao.insert(Store(id: id, name: storeName));
         var store = await storesDao.getByName(storeName);
-        expect(store.name, equals(storeName));
+        expect(store!.name, equals(storeName));
         expect(store.id, isNotNull);
 
         // Create a prices for some beverages
@@ -59,9 +76,9 @@ main() {
           final price = Price(
               id: uuid.v1(),
               product: product,
-              store: store,
               price: 11,
-              timestamp: DateTime.now());
+              timestamp: DateTime.now(),
+              store: store);
           await pricesDao.insert(price);
         }
         final prices = await pricesDao.getAllPricesAtStore(store);
@@ -70,12 +87,12 @@ main() {
       test('should query all prices by category', () async {
         final products =
             await pricesDao.getAllPricesByCategory(beverageCategory);
-        expect(products.length, equals(6));
+        expect(products.length, equals(5));
       });
       test('should query all prices by category in a store', () async {
         final store = await storesDao.getByName('100 Store');
         final prices = await pricesDao.getAllPricesByStoreAndCategory(
-            store, beverageCategory);
+            store!, beverageCategory);
         final stores = <String>{};
         for (var price in prices) {
           stores.add(price.store.id);

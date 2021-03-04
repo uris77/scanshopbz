@@ -6,10 +6,10 @@ part of 'store.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Store _$StoreFromJson(Map<String, dynamic> json) {
-  return Store(
-    id: json['id'] as String?,
-    name: json['name'] as String?,
+_$_Store _$_$_StoreFromJson(Map<String, dynamic> json) {
+  return _$_Store(
+    id: json['id'] as String,
+    name: json['name'] as String,
     geoLocation: json['geoLocation'] == null
         ? null
         : GeoLocation.fromJson(json['geoLocation'] as Map<String, dynamic>),
@@ -19,7 +19,7 @@ Store _$StoreFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$StoreToJson(Store instance) => <String, dynamic>{
+Map<String, dynamic> _$_$_StoreToJson(_$_Store instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'geoLocation': instance.geoLocation?.toJson(),

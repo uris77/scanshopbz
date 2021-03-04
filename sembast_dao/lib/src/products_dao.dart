@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:meta/meta.dart';
 import 'package:scanshop_api/api.dart';
 import 'package:scanshop_models/models.dart';
 import 'package:sembast/sembast.dart';
@@ -10,7 +9,7 @@ import 'package:sembast_db/sembast_db.dart';
 /// The Products DAO, used for interacting with the database.
 class ProductsDao extends Dao<Product> {
   /// Constructor
-  ProductsDao({@required this.databaseFile});
+  ProductsDao({required this.databaseFile});
 
   /// The name of the collection for storing products.
   static const String productStoreName = 'products';
@@ -55,7 +54,7 @@ class ProductsDao extends Dao<Product> {
   @override
   Future<List<Product>> getAllSortedByName() async {
     final finder = Finder(sortOrders: [SortOrder('name')]);
-    final snapshots = await _productStore.find(await _db, finder: finder);
+    final snapshots = await (_productStore.find(await _db, finder: finder));
     return snapshots.map((snapshot) {
       final product = Product.fromJson(snapshot.value);
       return product;
@@ -79,11 +78,11 @@ class ProductsDao extends Dao<Product> {
   }
 
   /// Gets a product with the given name
-  Future<Product> getByName(String name) async {
+  Future<Product?> getByName(String name) async {
     final filter = Filter.equals('name', name);
     final finder = Finder(filter: filter);
-    final snapshot = await _productStore.findFirst(await _db, finder: finder);
-    final product = Product.fromJson(snapshot.value);
+    final snapshot = await (_productStore.findFirst(await _db, finder: finder));
+    final product = snapshot == null ? null : Product.fromJson(snapshot.value);
     return product;
   }
 

@@ -1,4 +1,5 @@
-import 'package:meta/meta.dart';
+import 'dart:async';
+
 import 'package:scanshop_api/api.dart';
 import 'package:scanshop_models/models.dart';
 import 'package:sembast/sembast.dart';
@@ -8,7 +9,7 @@ import 'package:sembast_db/sembast_db.dart';
 /// Dao for interacting with persisted stores.
 class StoresDao extends Dao<Store> {
   /// constructor
-  StoresDao({@required this.databaseFile});
+  StoresDao({required this.databaseFile});
 
   /// The collection name for stores.
   static const String storeName = 'stores';
@@ -37,7 +38,8 @@ class StoresDao extends Dao<Store> {
   @override
   Future<List<Store>> getAllSortedByName() async {
     final finder = Finder(sortOrders: [SortOrder('name')]);
-    final snapshots = await _storeStore.find(await _db, finder: finder);
+    final snapshots = await (_storeStore.find(await _db, finder: finder)
+        as FutureOr<List<RecordSnapshot<int, Map<String, Object>>>>);
     return snapshots.map((snapshot) {
       final store = Store.fromJson(snapshot.value);
       return store;
@@ -52,14 +54,17 @@ class StoresDao extends Dao<Store> {
   @override
   Future<void> update(Store entity) async {
     final finder = Finder(filter: Filter.byKey(entity.id));
-    return await _storeStore.update(await _db, entity.toJson(), finder: finder);
+    await _storeStore.update(await _db, entity.toJson(), finder: finder);
   }
 
   /// Retrieves a store by its name.
-  Future<Store> getByName(String name) async {
+  Future<Store?> getByName(String name) async {
     final filter = Filter.equals('name', name);
     final finder = Finder(filter: filter);
-    final snapshot = await _storeStore.findFirst(await _db, finder: finder);
+    final snapshot = await (_storeStore.findFirst(await _db, finder: finder));
+    if (snapshot == null || snapshot.value.isEmpty) {
+      return null;
+    }
     var store = Store.fromJson(snapshot.value);
     return store;
   }

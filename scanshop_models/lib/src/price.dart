@@ -1,59 +1,23 @@
-import 'package:equatable/equatable.dart';
-import 'package:json_annotation/json_annotation.dart';
-import 'package:meta/meta.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:scanshop_api/api.dart';
 
 import '../models.dart';
 
+part 'price.freezed.dart';
 part 'price.g.dart';
 
 /// The price of an item at a store.
-@JsonSerializable(explicitToJson: true)
-class Price extends Entity implements Equatable {
+@freezed
+class Price extends Entity with _$Price {
   /// Constructor
-  Price(
-      {required this.id,
-      this.product,
-      this.store,
-      this.price,
-      this.timestamp});
+  @JsonSerializable(explicitToJson: true)
+  const factory Price(
+      {required String id,
+      required Product product,
+      required Store store,
+      required double price,
+      required DateTime timestamp}) = _Price;
 
-  /// converts a JSON object to Price
-  factory Price.fromJson(Map<String, dynamic> json) => _$PriceFromJson(json);
-
-  /// Copies a Price and modifies selected fields.
-  Price copyWith(
-      {required String id, Product? product, Store? store, double? price}) {
-    return Price(
-      id: id,
-      timestamp: DateTime.now(),
-      store: store ?? this.store,
-      product: product ?? this.product,
-      price: price ?? this.price,
-    );
-  }
-
-  /// Automatically generated unique id;
-  final String? id;
-
-  /// The product
-  final Product? product;
-
-  /// The store
-  final Store? store;
-
-  /// The price
-  final double? price;
-
-  /// The timestamp when it was created.
-  final DateTime? timestamp;
-
-  /// Converts price to JSON.
-  Map<String, dynamic> toJson() => _$PriceToJson(this);
-
-  @override
-  List<Object?> get props => [id];
-
-  @override
-  bool get stringify => true;
+  /// converts json to Price
+  factory Price.fromJson(Map<String, dynamic> json) => _$_$_PriceFromJson(json);
 }

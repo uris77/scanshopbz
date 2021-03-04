@@ -6,26 +6,26 @@ part of 'product.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Product _$ProductFromJson(Map<String, dynamic> json) {
-  return Product(
-    id: json['id'] as String?,
-    name: json['name'] as String?,
+_$_Product _$_$_ProductFromJson(Map<String, dynamic> json) {
+  return _$_Product(
+    id: json['id'] as String,
+    name: json['name'] as String,
     description: json['description'] as String?,
-    tags: (json['tags'] as List?)?.map((e) => e as String)?.toList() ?? [],
+    tags: (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList(),
     barcode: json['barcode'] as String?,
-    category: json['category'] == null
-        ? null
-        : ProductCategory.fromJson(json['category'] as Map<String, dynamic>),
+    category:
+        ProductCategory.fromJson(json['category'] as Map<String, dynamic>),
     manufacturer: json['manufacturer'] as String?,
   );
 }
 
-Map<String, dynamic> _$ProductToJson(Product instance) => <String, dynamic>{
+Map<String, dynamic> _$_$_ProductToJson(_$_Product instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
+      'description': instance.description,
       'tags': instance.tags,
       'barcode': instance.barcode,
-      'description': instance.description,
-      'category': instance.category?.toJson(),
+      'category': instance.category.toJson(),
       'manufacturer': instance.manufacturer,
     };

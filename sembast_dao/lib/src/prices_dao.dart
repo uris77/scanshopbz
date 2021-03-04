@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:meta/meta.dart';
 import 'package:scanshop_api/api.dart';
 import 'package:scanshop_models/models.dart';
 import 'package:sembast/sembast.dart';
@@ -10,7 +9,7 @@ import 'package:sembast_db/sembast_db.dart';
 /// The Prices DAO, used for interacting with the database.
 class PricesDao extends Dao<Price> {
   /// Constructor
-  PricesDao({@required this.databaseFile});
+  PricesDao({required this.databaseFile});
 
   /// The name of the prices collection.
   static const String pricesStoreName = 'prices';
@@ -41,7 +40,8 @@ class PricesDao extends Dao<Price> {
   @override
   Future<List<Price>> getAllSortedByName() async {
     final finder = Finder(sortOrders: [SortOrder('name.product.name')]);
-    final snapshots = await _pricesStore.find(await _db, finder: finder);
+    final snapshots = await (_pricesStore.find(await _db, finder: finder)
+        as FutureOr<List<RecordSnapshot<int, Map<String, Object>>>>);
     return snapshots.map(_snapshotToPrice).toList();
   }
 
@@ -59,14 +59,14 @@ class PricesDao extends Dao<Price> {
   /// retrieves prices for the specified product
   Future<List<Price>> getAllForProduct(Product product) async {
     final finder = Finder(filter: Filter.equals('product.name', product.name));
-    final snapshots = await _pricesStore.find(await _db, finder: finder);
+    final snapshots = await (_pricesStore.find(await _db, finder: finder));
     return snapshots.map(_snapshotToPrice).toList();
   }
 
   /// Retrieves all prices at a store.
   Future<List<Price>> getAllPricesAtStore(Store store) async {
     final finder = Finder(filter: Filter.equals('store.id', store.id));
-    final snapshots = await _pricesStore.find(await _db, finder: finder);
+    final snapshots = await (_pricesStore.find(await _db, finder: finder));
     return snapshots.map(_snapshotToPrice).toList();
   }
 
@@ -74,7 +74,7 @@ class PricesDao extends Dao<Price> {
   Future<List<Price>> getAllPricesByCategory(ProductCategory category) async {
     final finder =
         Finder(filter: Filter.equals('product.category.name', category.name));
-    final snapshots = await _pricesStore.find(await _db, finder: finder);
+    final snapshots = await (_pricesStore.find(await _db, finder: finder));
     return snapshots.map(_snapshotToPrice).toList();
   }
 
@@ -86,7 +86,7 @@ class PricesDao extends Dao<Price> {
       Filter.equals('product.category.name', category.name)
     ]);
     final snapshots =
-        await _pricesStore.find(await _db, finder: Finder(filter: filter));
+        await (_pricesStore.find(await _db, finder: Finder(filter: filter)));
     return snapshots.map(_snapshotToPrice).toList();
   }
 
