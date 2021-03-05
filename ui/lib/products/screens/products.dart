@@ -57,10 +57,16 @@ class Products extends StatelessWidget {
         padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
         child: Card(
             elevation: 12,
-            child: ListTile(
-              title: Text(product.name, style: TextStyles.title),
-              subtitle:
-                  Text('${product.manufacturer} | ${product.category.name}'),
+            child: GestureDetector(
+              child: ListTile(
+                title: Text(product.name, style: TextStyles.title),
+                subtitle:
+                    Text('${product.manufacturer} | ${product.category.name}'),
+              ),
+              onTap: () {
+                Navigator.of(context).pushNamed(AppRoutes.productPrices,
+                    arguments: {'product': product});
+              },
             )));
   }
 

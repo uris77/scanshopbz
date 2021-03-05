@@ -7,7 +7,7 @@ import 'package:sembast/sembast_memory.dart';
 import 'package:sembast_db/sembast_db.dart';
 
 /// The Products DAO, used for interacting with the database.
-class ProductsDao extends Dao<Product> {
+class ProductsDao extends Dao<Product> implements ProductQuery {
   /// Constructor
   ProductsDao({required this.databaseFile});
 
@@ -72,6 +72,7 @@ class ProductsDao extends Dao<Product> {
   }
 
   /// Counts the number of products for a particular category.
+  @override
   Future<int> countByCategory(String categoryName) async {
     final filter = Filter.equals('category.name', categoryName);
     return await _productStore.count(await _db, filter: filter);

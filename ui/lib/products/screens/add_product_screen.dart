@@ -40,7 +40,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
       padding: const EdgeInsets.all(20),
       child:
           BlocConsumer<ProductsBloc, ProductsState>(listener: (context, state) {
-        if (state is ProductsLoadSuccess) {
+        if (state is ProductSavedSuccessfully) {
           Navigator.pushNamedAndRemoveUntil(
               context, AppRoutes.products, ModalRoute.withName(AppRoutes.home));
         }

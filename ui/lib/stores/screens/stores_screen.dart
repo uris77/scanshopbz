@@ -34,20 +34,24 @@ class StoresScreen extends StatelessWidget {
 class _StoresScreenBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<StoresBloc, StoresState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          if (state is StoresLoadInProgress) {
-            return const CircularProgressIndicator();
-          } else if (state is StoresLoadSuccess) {
-            if (state.stores.isEmpty) {
-              return _EmptyList();
-            }
-            return _StoresList(key: UniqueKey(), stores: state.stores);
-          } else {
-            return Container(child: const Text('ERROR'));
-          }
-        });
+    return BlocConsumer<StoresBloc, StoresState>(listener: (context, state) {
+      print('state in screens: $state');
+    }, builder: (context, state) {
+      print('state in builder: $state');
+      if (state is StoresLoadInProgress) {
+        // BlocProvider.of<StoresBloc>(context).add(LoadStores());
+        return const Center(child: CircularProgressIndicator());
+      } else if (state is StoresLoadSuccess) {
+        if (state.stores.isEmpty) {
+          return _EmptyList();
+        }
+        return _StoresList(key: UniqueKey(), stores: state.stores);
+      } else {
+        // BlocProvider.of<StoresBloc>(context).add(LoadStores());
+        return const Center(child: CircularProgressIndicator());
+        // return Container(child: const Text('ERROR'));
+      }
+    });
   }
 }
 

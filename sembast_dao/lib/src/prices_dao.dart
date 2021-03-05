@@ -7,7 +7,8 @@ import 'package:sembast/sembast_memory.dart';
 import 'package:sembast_db/sembast_db.dart';
 
 /// The Prices DAO, used for interacting with the database.
-class PricesDao extends Dao<Price> {
+class PricesDao extends Dao<Price>
+    implements PriceQuery<Product, Price, Store> {
   /// Constructor
   PricesDao({required this.databaseFile});
 
@@ -57,6 +58,7 @@ class PricesDao extends Dao<Price> {
   }
 
   /// retrieves prices for the specified product
+  @override
   Future<List<Price>> getAllForProduct(Product product) async {
     final finder = Finder(filter: Filter.equals('product.name', product.name));
     final snapshots = await (_pricesStore.find(await _db, finder: finder));
@@ -64,6 +66,7 @@ class PricesDao extends Dao<Price> {
   }
 
   /// Retrieves all prices at a store.
+  @override
   Future<List<Price>> getAllPricesAtStore(Store store) async {
     final finder = Finder(filter: Filter.equals('store.id', store.id));
     final snapshots = await (_pricesStore.find(await _db, finder: finder));

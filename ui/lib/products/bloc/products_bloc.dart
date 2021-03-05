@@ -40,6 +40,6 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
 
   Stream<ProductsState> _addProduct(AddProduct event) async* {
     await productsDao.insert(event.product);
-    yield* _reloadProducts();
+    yield ProductSavedSuccessfully(product: event.product);
   }
 }
