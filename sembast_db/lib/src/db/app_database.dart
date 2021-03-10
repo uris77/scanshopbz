@@ -29,6 +29,7 @@ class AppDatabase {
     // final appDocumentDir = await getApplicationDocumentsDirectory();
     // Path with the form: /platform-specific-director/demo.db
     final dbPath = fileName!;
+    print('opening database with path $dbPath');
     final database = await databaseFactoryIo.openDatabase(dbPath);
     _dbOpenCompleter!.complete(database);
   }

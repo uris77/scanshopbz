@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scanshop/prices/bloc/prices_bloc.dart';
 import 'package:scanshop/products/bloc/products_bloc.dart';
-import 'package:scanshop/repositories/dbpath_generator.dart';
 import 'package:scanshop/repositories/id_generator.dart';
 import 'package:scanshop/router.dart';
 import 'package:scanshop/stores/bloc/stores_bloc.dart';
@@ -15,15 +14,14 @@ final RouteObserver<Route> routeObserver = RouteObserver<Route>();
 /// The main Scanshop App
 class Scanshop extends StatefulWidget {
   /// Constructor
-  Scanshop(
-      {Key key, @required this.idGenerator, @required this.dbpathGenerator})
+  Scanshop({Key key, @required this.idGenerator, @required this.dbpath})
       : super(key: key);
 
   /// The unique id Generator
   final IdGenerator idGenerator;
 
   /// Generates the path where the database is stored.
-  final DbpathGenerator dbpathGenerator;
+  final String dbpath;
 
   @override
   _ScanshopState createState() => _ScanshopState();
@@ -37,7 +35,8 @@ class _ScanshopState extends State<Scanshop> {
 
   @override
   void initState() {
-    dbPath = widget.dbpathGenerator.dbpath;
+    dbPath = widget.dbpath;
+    print('instantiating daos with file: $dbPath');
     productsBloc = ProductsBloc(productsDao: ProductsDao(databaseFile: dbPath));
     storesBloc = StoresBloc(storesDao: StoresDao(databaseFile: dbPath));
     pricesBloc = PricesBloc(pricesDao: PricesDao(databaseFile: dbPath));
@@ -49,8 +48,6 @@ class _ScanshopState extends State<Scanshop> {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<IdGenerator>(create: (_) => widget.idGenerator),
-        RepositoryProvider<DbpathGenerator>(
-            create: (_) => widget.dbpathGenerator)
       ],
       child: MultiBlocProvider(
           providers: [

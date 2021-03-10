@@ -17,5 +17,6 @@ void main() async {
 
   /// Generates the path where the database is stored.
   final dbpathGenerator = DbpathGenerator(dbFilename);
-  runApp(Scanshop(idGenerator: idGenerator, dbpathGenerator: dbpathGenerator));
+  final dbPath = await dbpathGenerator.dbPath();
+  runApp(Scanshop(idGenerator: idGenerator, dbpath: dbPath));
 }

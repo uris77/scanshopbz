@@ -5,17 +5,20 @@ import 'package:path_provider/path_provider.dart';
 class DbpathGenerator {
   /// Constructor
   DbpathGenerator(String dbFilename) {
-    getApplicationDocumentsDirectory().then((appDocumentDir) {
-      // final dbFilename = 'scanshopbz_demo';
-      _dbPath = join(appDocumentDir.path, dbFilename);
-    });
+    // getApplicationDocumentsDirectory().then((appDocumentDir) {
+    //   print('setting dbPath.... ${appDocumentDir.path} + $dbFilename');
+    //   _dbPath = join(appDocumentDir.path, dbFilename);
+    // });
+    _dbFileName = dbFilename;
   }
 
-  /// The path where the database is stored.
-  String dbpath;
+  String _dbFileName;
 
-  /// sets the dbpath
-  set _dbPath(String name) {
-    dbpath = name;
+  ///
+  Future<String> dbPath() async {
+    var appDocumentsDir = await getApplicationDocumentsDirectory();
+    print('setting dbPath.... ${appDocumentsDir.path} + $_dbFileName');
+    var _dbPath = join(appDocumentsDir.path, _dbFileName);
+    return _dbPath;
   }
 }
