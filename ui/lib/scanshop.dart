@@ -36,7 +36,6 @@ class _ScanshopState extends State<Scanshop> {
   @override
   void initState() {
     dbPath = widget.dbpath;
-    print('instantiating daos with file: $dbPath');
     productsBloc = ProductsBloc(productsDao: ProductsDao(databaseFile: dbPath));
     storesBloc = StoresBloc(storesDao: StoresDao(databaseFile: dbPath));
     pricesBloc = PricesBloc(pricesDao: PricesDao(databaseFile: dbPath));
